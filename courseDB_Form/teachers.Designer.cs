@@ -1,6 +1,6 @@
 ﻿namespace courseDB_Form
 {
-    partial class Form3
+    partial class teachers
     {
         /// <summary>
         /// Required designer variable.
@@ -28,60 +28,58 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
-            pictureBox1 = new PictureBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
+            cbTeachers = new TextBox();
+            pictureBoxPhoto = new PictureBox();
+            lblPosition = new TextBox();
+            lblResearchInterests = new TextBox();
             textBox4 = new TextBox();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            course = new Button();
+            beck_deportament_structure = new Button();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxPhoto).BeginInit();
             SuspendLayout();
             // 
-            // textBox1
+            // cbTeachers
             // 
-            textBox1.Location = new Point(12, 30);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(286, 536);
-            textBox1.TabIndex = 0;
+            cbTeachers.Location = new Point(12, 30);
+            cbTeachers.Multiline = true;
+            cbTeachers.Name = "cbTeachers";
+            cbTeachers.Size = new Size(286, 536);
+            cbTeachers.TabIndex = 0;
             // 
-            // pictureBox1
+            // pictureBoxPhoto
             // 
-            pictureBox1.Location = new Point(581, 30);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(198, 208);
-            pictureBox1.TabIndex = 1;
-            pictureBox1.TabStop = false;
+            pictureBoxPhoto.Location = new Point(581, 30);
+            pictureBoxPhoto.Name = "pictureBoxPhoto";
+            pictureBoxPhoto.Size = new Size(198, 208);
+            pictureBoxPhoto.TabIndex = 1;
+            pictureBoxPhoto.TabStop = false;
             // 
-            // textBox2
+            // lblPosition
             // 
-            textBox2.Location = new Point(304, 30);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(271, 27);
-            textBox2.TabIndex = 2;
-            textBox2.TextChanged += textBox2_TextChanged;
+            lblPosition.Location = new Point(304, 30);
+            lblPosition.Name = "lblPosition";
+            lblPosition.Size = new Size(271, 27);
+            lblPosition.TabIndex = 2;
             // 
-            // textBox3
+            // lblResearchInterests
             // 
-            textBox3.Location = new Point(304, 83);
-            textBox3.Multiline = true;
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(271, 199);
-            textBox3.TabIndex = 3;
+            lblResearchInterests.Location = new Point(304, 83);
+            lblResearchInterests.Multiline = true;
+            lblResearchInterests.Name = "lblResearchInterests";
+            lblResearchInterests.Size = new Size(271, 270);
+            lblResearchInterests.TabIndex = 3;
             // 
             // textBox4
             // 
-            textBox4.Location = new Point(304, 308);
+            textBox4.Location = new Point(304, 379);
             textBox4.Multiline = true;
             textBox4.Name = "textBox4";
-            textBox4.Size = new Size(271, 258);
+            textBox4.Size = new Size(271, 187);
             textBox4.TabIndex = 4;
             // 
             // label1
@@ -110,7 +108,6 @@
             label3.Size = new Size(196, 20);
             label3.TabIndex = 7;
             label3.Text = "Должность преподавателя";
-            label3.Click += label3_Click;
             // 
             // label4
             // 
@@ -124,79 +121,69 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(304, 285);
+            label5.Location = new Point(304, 356);
             label5.Name = "label5";
             label5.Size = new Size(183, 20);
             label5.TabIndex = 9;
             label5.Text = "Расписание пребывания";
-            label5.Click += label5_Click;
             // 
-            // button1
+            // course
             // 
-            button1.Location = new Point(585, 262);
-            button1.Name = "button1";
-            button1.Size = new Size(194, 67);
-            button1.TabIndex = 10;
-            button1.Text = "Перейти к курсу";
-            button1.UseVisualStyleBackColor = true;
+            course.Location = new Point(585, 262);
+            course.Name = "course";
+            course.Size = new Size(194, 67);
+            course.TabIndex = 10;
+            course.Text = "Перейти к курсу";
+            course.UseVisualStyleBackColor = true;
+            course.Click += course_Click;
             // 
-            // button2
+            // beck_deportament_structure
             // 
-            button2.Location = new Point(585, 408);
-            button2.Name = "button2";
-            button2.Size = new Size(194, 65);
-            button2.TabIndex = 11;
-            button2.Text = "Назад";
-            button2.UseVisualStyleBackColor = true;
+            beck_deportament_structure.Location = new Point(585, 335);
+            beck_deportament_structure.Name = "beck_deportament_structure";
+            beck_deportament_structure.Size = new Size(194, 65);
+            beck_deportament_structure.TabIndex = 11;
+            beck_deportament_structure.Text = "Назад";
+            beck_deportament_structure.UseVisualStyleBackColor = true;
+            beck_deportament_structure.Click += beck_deportament_structure_Click;
             // 
-            // button3
-            // 
-            button3.Location = new Point(585, 335);
-            button3.Name = "button3";
-            button3.Size = new Size(194, 67);
-            button3.TabIndex = 12;
-            button3.Text = "Обновление информации";
-            button3.UseVisualStyleBackColor = true;
-            // 
-            // Form3
+            // teachers
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(787, 578);
-            Controls.Add(button3);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(beck_deportament_structure);
+            Controls.Add(course);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(textBox4);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(pictureBox1);
-            Controls.Add(textBox1);
-            Name = "Form3";
+            Controls.Add(lblResearchInterests);
+            Controls.Add(lblPosition);
+            Controls.Add(pictureBoxPhoto);
+            Controls.Add(cbTeachers);
+            Name = "teachers";
             Text = "Перподаватели";
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxPhoto).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private TextBox textBox1;
-        private PictureBox pictureBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
+        private TextBox cbTeachers;
+        private PictureBox pictureBoxPhoto;
+        private TextBox lblPosition;
+        private TextBox lblResearchInterests;
         private TextBox textBox4;
         private Label label1;
         private Label label2;
         private Label label3;
         private Label label4;
         private Label label5;
-        private Button button1;
-        private Button button2;
-        private Button button3;
+        private Button course;
+        private Button beck_deportament_structure;
     }
 }

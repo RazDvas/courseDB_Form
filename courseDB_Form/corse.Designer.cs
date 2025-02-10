@@ -1,6 +1,6 @@
 ﻿namespace courseDB_Form
 {
-    partial class Form4
+    partial class corse
     {
         /// <summary>
         /// Required designer variable.
@@ -31,12 +31,12 @@
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
+            lblCourseName = new TextBox();
+            txtCourseProgram = new TextBox();
+            txtCourseMaterials = new TextBox();
+            teacher = new TextBox();
             label4 = new Label();
-            button1 = new Button();
+            beck_teachers = new Button();
             SuspendLayout();
             // 
             // label1
@@ -56,7 +56,6 @@
             label2.Size = new Size(183, 20);
             label2.TabIndex = 1;
             label2.Text = "Программа дисциплины";
-            label2.Click += label2_Click;
             // 
             // label3
             // 
@@ -66,37 +65,37 @@
             label3.Size = new Size(191, 20);
             label3.TabIndex = 2;
             label3.Text = "Методические материалы";
-            label3.Click += label3_Click;
             // 
-            // textBox1
+            // lblCourseName
             // 
-            textBox1.Location = new Point(12, 32);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(272, 27);
-            textBox1.TabIndex = 3;
+            lblCourseName.Location = new Point(12, 32);
+            lblCourseName.Name = "lblCourseName";
+            lblCourseName.Size = new Size(272, 27);
+            lblCourseName.TabIndex = 3;
             // 
-            // textBox2
+            // txtCourseProgram
             // 
-            textBox2.Location = new Point(13, 98);
-            textBox2.Multiline = true;
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(419, 340);
-            textBox2.TabIndex = 4;
+            txtCourseProgram.Location = new Point(13, 98);
+            txtCourseProgram.Multiline = true;
+            txtCourseProgram.Name = "txtCourseProgram";
+            txtCourseProgram.Size = new Size(419, 340);
+            txtCourseProgram.TabIndex = 4;
+            txtCourseProgram.TextChanged += textBox2_TextChanged;
             // 
-            // textBox3
+            // txtCourseMaterials
             // 
-            textBox3.Location = new Point(438, 98);
-            textBox3.Multiline = true;
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(350, 340);
-            textBox3.TabIndex = 5;
+            txtCourseMaterials.Location = new Point(438, 98);
+            txtCourseMaterials.Multiline = true;
+            txtCourseMaterials.Name = "txtCourseMaterials";
+            txtCourseMaterials.Size = new Size(350, 340);
+            txtCourseMaterials.TabIndex = 5;
             // 
-            // textBox4
+            // teacher
             // 
-            textBox4.Location = new Point(305, 32);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(483, 27);
-            textBox4.TabIndex = 6;
+            teacher.Location = new Point(305, 32);
+            teacher.Name = "teacher";
+            teacher.Size = new Size(483, 27);
+            teacher.TabIndex = 6;
             // 
             // label4
             // 
@@ -107,30 +106,31 @@
             label4.TabIndex = 7;
             label4.Text = "ФИО преподавателя";
             // 
-            // button1
+            // beck_teachers
             // 
-            button1.Location = new Point(12, 444);
-            button1.Name = "button1";
-            button1.Size = new Size(135, 48);
-            button1.TabIndex = 8;
-            button1.Text = "Назад";
-            button1.UseVisualStyleBackColor = true;
+            beck_teachers.Location = new Point(12, 444);
+            beck_teachers.Name = "beck_teachers";
+            beck_teachers.Size = new Size(135, 48);
+            beck_teachers.TabIndex = 8;
+            beck_teachers.Text = "Назад";
+            beck_teachers.UseVisualStyleBackColor = true;
+            beck_teachers.Click += beck_teachers_Click;
             // 
-            // Form4
+            // corse
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(796, 504);
-            Controls.Add(button1);
+            Controls.Add(beck_teachers);
             Controls.Add(label4);
-            Controls.Add(textBox4);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(teacher);
+            Controls.Add(txtCourseMaterials);
+            Controls.Add(txtCourseProgram);
+            Controls.Add(lblCourseName);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Name = "Form4";
+            Name = "corse";
             Text = "Курс";
             ResumeLayout(false);
             PerformLayout();
@@ -141,11 +141,11 @@
         private Label label1;
         private Label label2;
         private Label label3;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private TextBox textBox4;
+        private TextBox lblCourseName;
+        private TextBox txtCourseProgram;
+        private TextBox txtCourseMaterials;
+        private TextBox teacher;
         private Label label4;
-        private Button button1;
+        private Button beck_teachers;
     }
 }
