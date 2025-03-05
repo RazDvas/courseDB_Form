@@ -14,7 +14,7 @@ namespace courseDB_Form
     public partial class scientific_work : Form
     {
 
-        private string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=yourpassword;Database=YourDatabase";
+        private string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=268413;Database=testDB";
         public scientific_work()
         {
             InitializeComponent();
@@ -29,19 +29,19 @@ namespace courseDB_Form
                 {
                     connection.Open();
 
-                    string query = "SELECT Id, Name FROM ResearchDirections";
+                    string query = "SELECT direction_ID, direction_name FROM researchdirections";
 
                     using (var command = new NpgsqlCommand(query, connection))
                     using (var reader = command.ExecuteReader())
                     {
-                        /*while (reader.Read())
+                        while (reader.Read())
                         {
-                            lstDirections.Items.Add(new Direction
+                            lbDirections.Items.Add(new Direction
                             {
                                 Id = reader.GetInt32(0),
                                 Name = reader.GetString(1)
                             });
-                        }*/
+                        }
                     }
                 }
             }
@@ -51,13 +51,6 @@ namespace courseDB_Form
             }
         }
 
-        private void lstDirections_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            /*if (lstDirections.SelectedItem is Direction selectedDirection)
-            {
-                LoadDirectionDetails(selectedDirection.Id);
-            }*/
-        }
 
         private void LoadDirectionDetails(int directionId)
         {
@@ -68,7 +61,7 @@ namespace courseDB_Form
                     connection.Open();
 
                     // Получаем описание направления
-                    string descriptionQuery = "SELECT Description FROM ResearchDirections WHERE Id = @Id";
+                    string descriptionQuery = "SELECT brief_description FROM researchdirections WHERE direction_ID = @Id";
                     using (var descriptionCommand = new NpgsqlCommand(descriptionQuery, connection))
                     {
                         descriptionCommand.Parameters.AddWithValue("@Id", directionId);
@@ -76,16 +69,23 @@ namespace courseDB_Form
                     }
 
                     // Получаем участников направления
-                    string participantsQuery = "SELECT Name FROM Participants WHERE ResearchDirectionId = @Id";
+                    string participantsQuery = @"
+                        SELECT s.student_name 
+                        FROM students s
+                        JOIN researchparticipants rp ON s.student_ID = rp.student_ID
+                        WHERE rp.direction_ID = @directionId;";
+
                     using (var participantsCommand = new NpgsqlCommand(participantsQuery, connection))
                     {
-                        participantsCommand.Parameters.AddWithValue("@Id", directionId);
+                        // Передаём параметр directionId
+                        participantsCommand.Parameters.AddWithValue("@directionId", directionId);
 
                         using (var reader = participantsCommand.ExecuteReader())
                         {
-                            txtParticipants.Clear();
+                            txtParticipants.Clear(); // Очищаем текстовое поле перед заполнением
                             while (reader.Read())
                             {
+                                // Добавляем имя студента в текстовое поле
                                 txtParticipants.AppendText(reader.GetString(0) + Environment.NewLine);
                             }
                         }
@@ -104,10 +104,16 @@ namespace courseDB_Form
 
         private void beck_deportament_Click(object sender, EventArgs e)
         {
-            int userID = 0;
             Hide();
-            new deportament_structure(userID).Show();
+            new deportament_structure().Show();
+        }
 
+        private void lbDirections_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lbDirections.SelectedItem is Direction selectedDirection)
+            {
+                LoadDirectionDetails(selectedDirection.Id);
+            }
         }
     }
 

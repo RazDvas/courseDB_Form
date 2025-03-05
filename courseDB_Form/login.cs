@@ -1,5 +1,7 @@
 using Microsoft.VisualBasic.ApplicationServices;
 using Npgsql;
+using System.Text;
+using System.Security.Cryptography;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 
@@ -7,7 +9,7 @@ namespace courseDB_Form
 {
     public partial class Login : Form
     {
-        NpgsqlConnection conn = new NpgsqlConnection("Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=268413;");
+        NpgsqlConnection conn = new NpgsqlConnection("Host=localhost;Port=5432;Username=postgres;Password=268413;Database=testDB");
         public Login()
         {
             InitializeComponent(); 
@@ -26,13 +28,13 @@ namespace courseDB_Form
                     {
                         connection.Open();
 
-                        string query = "SELECT Id, Role FROM Users WHERE Username = @username AND PasswordHash = @passwordHash";
+                        string query = "SELECT user_ID, user_role FROM users WHERE user_name = @username AND user_password = @password";
                         string username = txtUsername.Text.Trim(); // Имя пользователя
                         string password = txtPassword.Text.Trim(); // Пароль
                         using (var cmd = new NpgsqlCommand(query, connection))
                         {
                             cmd.Parameters.AddWithValue("username", username);
-                            cmd.Parameters.AddWithValue("passwordHash", HashPassword(password)); // Функция для хэширования пароля
+                            cmd.Parameters.AddWithValue("password", HashPassword(password)); // Функция для хэширования пароля
 
                             using (var reader = cmd.ExecuteReader())
                             {
@@ -46,12 +48,13 @@ namespace courseDB_Form
                                     {
                                         new AdminForm().Show();
                                     }
-                                    else new deportament_structure(userId).Show();
+                                    else new deportament_structure().Show();
                                     this.Hide();
                                 }
                                 else
                                 {
                                     MessageBox.Show("Неверный логин или пароль.");
+                                    new Login().Show();
                                 }
                             }
                         }
@@ -68,12 +71,23 @@ namespace courseDB_Form
                 MessageBox.Show($"Ошибка: {ex.Message}");
             }
         }
+
         private string HashPassword(string password)
         {
-            using (var sha256 = System.Security.Cryptography.SHA256.Create())
+            // Создаем объект SHA-256
+            using (SHA256 sha256Hash = SHA256.Create())
             {
-                var hash = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return Convert.ToBase64String(hash);
+                // Преобразуем пароль в массив байтов и вычисляем хэш
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+                // Преобразуем массив байтов в строку в шестнадцатеричном формате
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2")); // "x2" означает шестнадцатеричный формат
+                }
+
+                return builder.ToString();
             }
         }
 

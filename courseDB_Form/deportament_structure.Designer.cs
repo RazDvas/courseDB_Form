@@ -31,22 +31,21 @@
             DepartmentName = new TextBox();
             lblHead = new TextBox();
             lblDeputyHead = new TextBox();
-            lbSection = new TextBox();
-            lbSectionLeader = new TextBox();
             show_teaher = new Button();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
-            label4 = new Label();
             label5 = new Label();
             beck_department = new Button();
             scientific_worck_show = new Button();
+            lbSection = new ListBox();
             SuspendLayout();
             // 
             // DepartmentName
             // 
             DepartmentName.Location = new Point(12, 28);
             DepartmentName.Name = "DepartmentName";
+            DepartmentName.ReadOnly = true;
             DepartmentName.Size = new Size(404, 27);
             DepartmentName.TabIndex = 0;
             // 
@@ -54,6 +53,7 @@
             // 
             lblHead.Location = new Point(12, 86);
             lblHead.Name = "lblHead";
+            lblHead.ReadOnly = true;
             lblHead.Size = new Size(279, 27);
             lblHead.TabIndex = 1;
             // 
@@ -61,22 +61,9 @@
             // 
             lblDeputyHead.Location = new Point(12, 139);
             lblDeputyHead.Name = "lblDeputyHead";
+            lblDeputyHead.ReadOnly = true;
             lblDeputyHead.Size = new Size(279, 27);
             lblDeputyHead.TabIndex = 2;
-            // 
-            // lbSection
-            // 
-            lbSection.Location = new Point(12, 192);
-            lbSection.Name = "lbSection";
-            lbSection.Size = new Size(279, 27);
-            lbSection.TabIndex = 3;
-            // 
-            // lbSectionLeader
-            // 
-            lbSectionLeader.Location = new Point(12, 245);
-            lbSectionLeader.Name = "lbSectionLeader";
-            lbSectionLeader.Size = new Size(279, 27);
-            lbSectionLeader.TabIndex = 4;
             // 
             // show_teaher
             // 
@@ -115,23 +102,14 @@
             label3.TabIndex = 8;
             label3.Text = "Заместитель заведующего";
             // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(12, 169);
-            label4.Name = "label4";
-            label4.Size = new Size(124, 20);
-            label4.TabIndex = 9;
-            label4.Text = "Секция кафедры";
-            // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(12, 222);
+            label5.Location = new Point(12, 169);
             label5.Name = "label5";
-            label5.Size = new Size(157, 20);
+            label5.Size = new Size(296, 20);
             label5.TabIndex = 10;
-            label5.Text = "Руководитель секции";
+            label5.Text = "Название секций и руководитель секции";
             // 
             // beck_department
             // 
@@ -153,24 +131,31 @@
             scientific_worck_show.UseVisualStyleBackColor = true;
             scientific_worck_show.Click += scientific_worck_show_Click;
             // 
+            // lbSection
+            // 
+            lbSection.FormattingEnabled = true;
+            lbSection.Location = new Point(12, 192);
+            lbSection.Name = "lbSection";
+            lbSection.Size = new Size(436, 64);
+            lbSection.TabIndex = 13;
+            // 
             // deportament_structure
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(460, 375);
+            Controls.Add(lbSection);
             Controls.Add(scientific_worck_show);
             Controls.Add(beck_department);
             Controls.Add(label5);
-            Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(show_teaher);
-            Controls.Add(lbSectionLeader);
-            Controls.Add(lbSection);
             Controls.Add(lblDeputyHead);
             Controls.Add(lblHead);
             Controls.Add(DepartmentName);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "deportament_structure";
             Text = "Структура кафедры";
             ResumeLayout(false);
@@ -182,15 +167,13 @@
         private TextBox DepartmentName;
         private TextBox lblHead;
         private TextBox lblDeputyHead;
-        private TextBox lbSection;
-        private TextBox lbSectionLeader;
         private Button show_teaher;
         private Label label1;
         private Label label2;
         private Label label3;
-        private Label label4;
         private Label label5;
         private Button beck_department;
         private Button scientific_worck_show;
+        private ListBox lbSection;
     }
 }

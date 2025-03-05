@@ -13,13 +13,14 @@ namespace courseDB_Form
 {
     public partial class corse : Form
     {
-        private string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=yourpassword;Database=YourDatabase";
+        private string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=268413;Database=testDB";
         private string teacherName;
         public corse(string teacher)
         {
             InitializeComponent();
-            this.teacherName = teacherName;
+            this.teacherName = teacher;
             LoadCourseInfo();
+            txtTeacher.Text = teacher;
         }
 
 
@@ -33,22 +34,22 @@ namespace courseDB_Form
                     connection.Open();
 
                     string query = @"
-                        SELECT c.Name, c.Program, c.Materials
-                        FROM Courses c
-                        JOIN Teachers t ON c.TeacherId = t.Id
-                        WHERE t.FullName = @teacherName";
+                        SELECT course_name, discipline_program, methodological_material
+                        FROM courses
+                        JOIN teachers ON courses.teacher_ID = teachers.teacher_ID
+                        WHERE teachers.teacher_name = @teacher_name;";
 
                     using (var cmd = new NpgsqlCommand(query, connection))
                     {
-                        cmd.Parameters.AddWithValue("teacherName", teacherName);
+                        cmd.Parameters.AddWithValue("teacher_name", teacherName);
 
                         using (var reader = cmd.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                lblCourseName.Text = reader["Name"].ToString();
-                                txtCourseProgram.Text = reader["Program"].ToString();
-                                txtCourseMaterials.Text = reader["Materials"]?.ToString() ?? "Методические материалы отсутствуют.";
+                                lblCourseName.Text = reader["course_name"].ToString();
+                                txtCourseProgram.Text = reader["discipline_program"].ToString();
+                                txtCourseMaterials.Text = reader["methodological_material"]?.ToString() ?? "Методические материалы отсутствуют.";
                             }
                             else
                             {

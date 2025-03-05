@@ -48,6 +48,7 @@
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(252, 27);
             txtPassword.TabIndex = 1;
+            txtPassword.UseSystemPasswordChar = true;
             // 
             // label1
             // 
@@ -87,6 +88,7 @@
             Controls.Add(label1);
             Controls.Add(txtPassword);
             Controls.Add(txtUsername);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "Login";
             Text = "Вход";
             ResumeLayout(false);

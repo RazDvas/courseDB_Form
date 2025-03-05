@@ -34,7 +34,7 @@
             lblCourseName = new TextBox();
             txtCourseProgram = new TextBox();
             txtCourseMaterials = new TextBox();
-            teacher = new TextBox();
+            txtTeacher = new TextBox();
             label4 = new Label();
             beck_teachers = new Button();
             SuspendLayout();
@@ -70,6 +70,7 @@
             // 
             lblCourseName.Location = new Point(12, 32);
             lblCourseName.Name = "lblCourseName";
+            lblCourseName.ReadOnly = true;
             lblCourseName.Size = new Size(272, 27);
             lblCourseName.TabIndex = 3;
             // 
@@ -78,6 +79,7 @@
             txtCourseProgram.Location = new Point(13, 98);
             txtCourseProgram.Multiline = true;
             txtCourseProgram.Name = "txtCourseProgram";
+            txtCourseProgram.ReadOnly = true;
             txtCourseProgram.Size = new Size(419, 340);
             txtCourseProgram.TabIndex = 4;
             txtCourseProgram.TextChanged += textBox2_TextChanged;
@@ -87,15 +89,17 @@
             txtCourseMaterials.Location = new Point(438, 98);
             txtCourseMaterials.Multiline = true;
             txtCourseMaterials.Name = "txtCourseMaterials";
+            txtCourseMaterials.ReadOnly = true;
             txtCourseMaterials.Size = new Size(350, 340);
             txtCourseMaterials.TabIndex = 5;
             // 
-            // teacher
+            // txtTeacher
             // 
-            teacher.Location = new Point(305, 32);
-            teacher.Name = "teacher";
-            teacher.Size = new Size(483, 27);
-            teacher.TabIndex = 6;
+            txtTeacher.Location = new Point(305, 32);
+            txtTeacher.Name = "txtTeacher";
+            txtTeacher.ReadOnly = true;
+            txtTeacher.Size = new Size(483, 27);
+            txtTeacher.TabIndex = 6;
             // 
             // label4
             // 
@@ -123,13 +127,14 @@
             ClientSize = new Size(796, 504);
             Controls.Add(beck_teachers);
             Controls.Add(label4);
-            Controls.Add(teacher);
+            Controls.Add(txtTeacher);
             Controls.Add(txtCourseMaterials);
             Controls.Add(txtCourseProgram);
             Controls.Add(lblCourseName);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "corse";
             Text = "Курс";
             ResumeLayout(false);
@@ -144,7 +149,7 @@
         private TextBox lblCourseName;
         private TextBox txtCourseProgram;
         private TextBox txtCourseMaterials;
-        private TextBox teacher;
+        private TextBox txtTeacher;
         private Label label4;
         private Button beck_teachers;
     }

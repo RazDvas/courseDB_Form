@@ -13,8 +13,8 @@ namespace courseDB_Form
 {
     public partial class deportament_structure : Form
     {
-        private string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=yourpassword;Database=YourDatabase";
-        public deportament_structure(int UserID)
+        private string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=268413;Database=testDB";
+        public deportament_structure()
         {
             InitializeComponent();
             LoadDepartmentStructure();
@@ -31,28 +31,33 @@ namespace courseDB_Form
                     connection.Open();
 
                     // Запрос для получения данных о кафедре и секциях
-                    string departmentQuery = "SELECT Name, Head, DeputyHead FROM Departments WHERE Id = 1"; // Измените Id, если нужно
+                    string departmentQuery = "SELECT department_name, department_head, deputy_head FROM departments WHERE department_ID = @id"; // Измените Id, если нужно
 
                     using (var departmentCmd = new NpgsqlCommand(departmentQuery, connection))
-                    using (var reader = departmentCmd.ExecuteReader())
                     {
-                        if (reader.Read())
+                        departmentCmd.Parameters.AddWithValue("id", 1);
+                        using (var reader = departmentCmd.ExecuteReader())
                         {
-                            lblHead.Text = $"{reader["Head"]}";
-                            lblDeputyHead.Text = $"{reader["DeputyHead"]}";
+                            if (reader.Read())
+                            {
+                                lblHead.Text = $"{reader["department_head"]}";
+                                lblDeputyHead.Text = $"{reader["deputy_head"]}";
+                                DepartmentName.Text = $"{reader["department_name"]}";
+                            }
                         }
                     }
+                    
 
-                    string sectionQuery = "SELECT Name, Leader FROM Sections WHERE DepartmentId = 1"; // Измените Id, если нужно
+                    string sectionQuery = "SELECT section_name, leader_name FROM sections WHERE department_ID = 1"; // Измените Id, если нужно
 
                     using (var sectionCmd = new NpgsqlCommand(sectionQuery, connection))
                     using (var reader = sectionCmd.ExecuteReader())
                     {
-                        /*lbSection.item.Clear();
+                        lbSection.Items.Clear();
                         while (reader.Read())
                         {
-                            lbSections.Items.Add($"{reader["Name"]} ({reader["Leader"]})");
-                        }*/
+                            lbSection.Items.Add($"{reader["section_name"]} ({reader["leader_name"]})");
+                        }
                     }
                 }
             }

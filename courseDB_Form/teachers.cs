@@ -13,7 +13,7 @@ namespace courseDB_Form
 {
     public partial class teachers : Form
     {
-        private string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=yourpassword;Database=YourDatabase";
+        private string connectionString = "Host=localhost;Port=5432;Username=postgres;Password=268413;Database=testDB";
         public teachers()
         {
             InitializeComponent();
@@ -21,7 +21,7 @@ namespace courseDB_Form
         }
 
 
-        // Загрузка имен преподавателей в ComboBox
+        // Загрузка имен преподавателей в listBox
         private void LoadTeacherNames()
         {
             try
@@ -30,15 +30,15 @@ namespace courseDB_Form
                 {
                     connection.Open();
 
-                    string query = "SELECT FullName FROM Teachers";
+                    string query = "SELECT teacher_name FROM teachers";
 
                     using (var cmd = new NpgsqlCommand(query, connection))
                     using (var reader = cmd.ExecuteReader())
                     {
-                        /*while (reader.Read())
+                        while (reader.Read())
                         {
-                            cbTeachers.Items.Add(reader["FullName"].ToString());
-                        }*/
+                            lbTeachers.Items.Add(reader["teacher_name"].ToString());
+                        }
                     }
                 }
             }
@@ -48,15 +48,6 @@ namespace courseDB_Form
             }
         }
 
-        // Обработчик выбора преподавателя
-        private void cbTeachers_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            /*string selectedTeacher = cbTeachers.SelectedItem?.ToString();
-            if (!string.IsNullOrEmpty(selectedTeacher))
-            {
-                LoadTeacherInfo(selectedTeacher);
-            }*/
-        }
 
         // Загрузка информации о преподавателе
         private void LoadTeacherInfo(string teacherName)
@@ -68,9 +59,9 @@ namespace courseDB_Form
                     connection.Open();
 
                     string query = @"
-                        SELECT t.FullName, t.Position, t.ResearchInterests, t.Photo
-                        FROM Teachers t
-                        WHERE t.FullName = @name";
+                        SELECT teacher_name, post, scientific_interests, teacher_image, schedule_of_stay
+                        FROM Teachers 
+                        WHERE teacher_name = @name";
 
                     using (var cmd = new NpgsqlCommand(query, connection))
                     {
@@ -81,15 +72,17 @@ namespace courseDB_Form
                             if (reader.Read())
                             {
                                 // Должность
-                                lblPosition.Text = reader["Position"]?.ToString() ?? "Не указано";
+                                lblPosition.Text = reader["post"]?.ToString() ?? "Не указано";
 
                                 // Научные интересы
-                                lblResearchInterests.Text = reader["ResearchInterests"]?.ToString() ?? "Не указано";
+                                lblResearchInterests.Text = reader["scientific_interests"]?.ToString() ?? "Не указано";
+
+                                lblSchelduleOfStay.Text = reader["schedule_of_stay"]?.ToString() ?? "Не указано";
 
                                 // Фото
-                                if (reader["Photo"] != DBNull.Value)
+                                if (reader["teacher_image"] != DBNull.Value)
                                 {
-                                    byte[] photoBytes = (byte[])reader["Photo"];
+                                    byte[] photoBytes = (byte[])reader["teacher_image"];
                                     using (var ms = new MemoryStream(photoBytes))
                                     {
                                         pictureBoxPhoto.Image = Image.FromStream(ms);
@@ -116,8 +109,7 @@ namespace courseDB_Form
         private void beck_deportament_structure_Click(object sender, EventArgs e)
         {
             Hide();
-            int userID = 0;
-            deportament_structure deportament = new deportament_structure(userID);
+            deportament_structure deportament = new deportament_structure();
             deportament.Show();
         }
 
@@ -128,8 +120,7 @@ namespace courseDB_Form
 
         private void course_Click(object sender, EventArgs e)
         {
-            //string selectedTeacher = cbTeachers.SelectedItem?.ToString();
-            string selectedTeacher = "";
+            string selectedTeacher = lbTeachers.SelectedItem?.ToString();
             if (string.IsNullOrEmpty(selectedTeacher))
             {
                 MessageBox.Show("Пожалуйста, выберите преподавателя.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -137,8 +128,18 @@ namespace courseDB_Form
             }
 
             // Открываем форму с курсами
+            Hide();
             var courseForm = new corse(selectedTeacher);
             courseForm.ShowDialog();
+        }
+
+        private void lbTeachers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedTeacher = lbTeachers.SelectedItem?.ToString();
+            if (!string.IsNullOrEmpty(selectedTeacher))
+            {
+                LoadTeacherInfo(selectedTeacher);
+            }
         }
     }
 }

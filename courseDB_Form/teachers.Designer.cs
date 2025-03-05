@@ -28,11 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            cbTeachers = new TextBox();
             pictureBoxPhoto = new PictureBox();
             lblPosition = new TextBox();
             lblResearchInterests = new TextBox();
-            textBox4 = new TextBox();
+            lblSchelduleOfStay = new TextBox();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
@@ -40,16 +39,9 @@
             label5 = new Label();
             course = new Button();
             beck_deportament_structure = new Button();
+            lbTeachers = new ListBox();
             ((System.ComponentModel.ISupportInitialize)pictureBoxPhoto).BeginInit();
             SuspendLayout();
-            // 
-            // cbTeachers
-            // 
-            cbTeachers.Location = new Point(12, 30);
-            cbTeachers.Multiline = true;
-            cbTeachers.Name = "cbTeachers";
-            cbTeachers.Size = new Size(286, 536);
-            cbTeachers.TabIndex = 0;
             // 
             // pictureBoxPhoto
             // 
@@ -63,6 +55,7 @@
             // 
             lblPosition.Location = new Point(304, 30);
             lblPosition.Name = "lblPosition";
+            lblPosition.ReadOnly = true;
             lblPosition.Size = new Size(271, 27);
             lblPosition.TabIndex = 2;
             // 
@@ -71,16 +64,18 @@
             lblResearchInterests.Location = new Point(304, 83);
             lblResearchInterests.Multiline = true;
             lblResearchInterests.Name = "lblResearchInterests";
+            lblResearchInterests.ReadOnly = true;
             lblResearchInterests.Size = new Size(271, 270);
             lblResearchInterests.TabIndex = 3;
             // 
-            // textBox4
+            // lblSchelduleOfStay
             // 
-            textBox4.Location = new Point(304, 379);
-            textBox4.Multiline = true;
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(271, 187);
-            textBox4.TabIndex = 4;
+            lblSchelduleOfStay.Location = new Point(304, 379);
+            lblSchelduleOfStay.Multiline = true;
+            lblSchelduleOfStay.Name = "lblSchelduleOfStay";
+            lblSchelduleOfStay.ReadOnly = true;
+            lblSchelduleOfStay.Size = new Size(271, 175);
+            lblSchelduleOfStay.TabIndex = 4;
             // 
             // label1
             // 
@@ -147,11 +142,21 @@
             beck_deportament_structure.UseVisualStyleBackColor = true;
             beck_deportament_structure.Click += beck_deportament_structure_Click;
             // 
+            // lbTeachers
+            // 
+            lbTeachers.FormattingEnabled = true;
+            lbTeachers.Location = new Point(12, 30);
+            lbTeachers.Name = "lbTeachers";
+            lbTeachers.Size = new Size(286, 524);
+            lbTeachers.TabIndex = 12;
+            lbTeachers.SelectedIndexChanged += lbTeachers_SelectedIndexChanged;
+            // 
             // teachers
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(787, 578);
+            ClientSize = new Size(787, 563);
+            Controls.Add(lbTeachers);
             Controls.Add(beck_deportament_structure);
             Controls.Add(course);
             Controls.Add(label5);
@@ -159,11 +164,11 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(textBox4);
+            Controls.Add(lblSchelduleOfStay);
             Controls.Add(lblResearchInterests);
             Controls.Add(lblPosition);
             Controls.Add(pictureBoxPhoto);
-            Controls.Add(cbTeachers);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "teachers";
             Text = "Перподаватели";
             ((System.ComponentModel.ISupportInitialize)pictureBoxPhoto).EndInit();
@@ -172,12 +177,10 @@
         }
 
         #endregion
-
-        private TextBox cbTeachers;
         private PictureBox pictureBoxPhoto;
         private TextBox lblPosition;
         private TextBox lblResearchInterests;
-        private TextBox textBox4;
+        private TextBox lblSchelduleOfStay;
         private Label label1;
         private Label label2;
         private Label label3;
@@ -185,5 +188,6 @@
         private Label label5;
         private Button course;
         private Button beck_deportament_structure;
+        private ListBox lbTeachers;
     }
 }
