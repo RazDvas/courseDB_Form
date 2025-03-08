@@ -22,6 +22,7 @@ namespace courseDB_Form
             panelAddDIrection.Visible = false;
             panelUpdateDirection.Visible = false;
             panelUpdateTeacher.Visible = false;
+            cbUpRole.SelectionStart = cbUpRole.SelectedIndex = 0;
         }
 
         private void btnRegistration_Click(object sender, EventArgs e)
@@ -32,7 +33,7 @@ namespace courseDB_Form
             txtNewStay.Visible = false;
             txtNewInterests.Visible = false;
 
-            pictureBoxTeacherPhoto.Visible = false;
+            pbUpPhoto.Visible = false;
 
             panelRegistration.Visible = true;
             panelAddDIrection.Visible = false;
@@ -50,10 +51,10 @@ namespace courseDB_Form
 
         private void btnUpdateTeacher_Click(object sender, EventArgs e)
         {
+            panelUpdateTeacher.Visible = true;
             panelRegistration.Visible = false;
             panelAddDIrection.Visible = false;
             panelUpdateDirection.Visible = false;
-            panelUpdateTeacher.Visible = true;
         }
 
         private void scientificWorkUpdating_Click(object sender, EventArgs e)
@@ -63,7 +64,7 @@ namespace courseDB_Form
             panelUpdateDirection.Visible = false;
             panelUpdateTeacher.Visible = false;
         }
-        // Сделано
+        // Кнопка для регистрации нового пользователя
         private void btnRegister_Click(object sender, EventArgs e)
         {
             string name = txtNewUsername.Text;
@@ -72,68 +73,38 @@ namespace courseDB_Form
             string stay = txtNewStay.Text;
             string researchInterests = txtNewInterests.Text;
             string role = cbSelectUserRegistration.SelectedItem.ToString();
-            string group = cbGroup.SelectedItem.ToString();
+            string group = "";
+            if (cbGroup.SelectedItem != null)
+            {
+                group = cbGroup.SelectedItem.ToString();
+            }
             RegisterUser(name, password, role, group, post, stay, researchInterests, ConvertImageToByteArray());
         }
-        // Кнопка для добавлени фото
+        // Кнопка для добавления фото при регистрации
         private void btnUploadPhoto_Click(object sender, EventArgs e)
+        {
+            addPhoto();
+        }
+        // Метод для добавления фото
+        private void addPhoto()
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
+                // Настройка фильтра для выбора только изображений
                 openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+
+                // Если пользователь выбрал файл и нажал "ОК"
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    pictureBoxUserPhoto.Image = Image.FromFile(openFileDialog.FileName);
-                }
-            }
-        }
-
-        // Переделать метод
-        private void btnSearchTeacher_Click(object sender, EventArgs e)
-        {
-            int userId;
-            if (!int.TryParse(txtTeacherId.Text, out userId))
-            {
-                MessageBox.Show("Введите корректный ID пользователя!");
-                return;
-            }
-
-            using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
-            {
-                try
-                {
-                    conn.Open();
-                    string query = "SELECT name, password, position, duration, research_interests, photo_path FROM users WHERE id = @id";
-
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                    try
                     {
-                        cmd.Parameters.AddWithValue("@id", userId);
-                        using (NpgsqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                txtTeacherName.Text = reader["name"].ToString();
-                                txtTeacherPassword.Text = reader["password"].ToString();
-                                txtTeacherPost.Text = reader["position"].ToString();
-                                txtTeacherStay.Text = reader["duration"].ToString();
-                                txtTeacherInterests.Text = reader["research_interests"].ToString();
-
-                                string photoPath = reader["photo_path"].ToString();
-                                if (File.Exists(photoPath))
-                                {
-                                    pictureBoxTeacherPhoto.Image = Image.FromFile(photoPath);
-                                }
-                            }
-                            else
-                            {
-                                MessageBox.Show("Преподаватель не найден!");
-                            }
-                        }
+                        // Загружаем выбранное изображение в PictureBox
+                        pictureBoxUserPhoto.Image = Image.FromFile(openFileDialog.FileName);
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Ошибка: " + ex.Message);
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Ошибка при загрузке изображения: " + ex.Message, "Ошибка");
+                    }
                 }
             }
         }
@@ -143,10 +114,6 @@ namespace courseDB_Form
 
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void btnUpdateTeacherPhoto_Click(object sender, EventArgs e)
         {
@@ -299,7 +266,7 @@ namespace courseDB_Form
 
                 cbGroup.Visible = false;
 
-                pictureBoxTeacherPhoto.Visible = true;
+                pbUpPhoto.Visible = true;
 
                 btnUploadPhoto.Visible = true;
 
@@ -317,7 +284,7 @@ namespace courseDB_Form
                 txtNewStay.Visible = false;
                 txtNewInterests.Visible = false;
 
-                pictureBoxTeacherPhoto.Visible = false;
+                pbUpPhoto.Visible = false;
 
                 btnUploadPhoto.Visible = false;
 
@@ -334,7 +301,7 @@ namespace courseDB_Form
                 txtNewStay.Visible = false;
                 txtNewInterests.Visible = false;
 
-                pictureBoxTeacherPhoto.Visible = false;
+                pbUpPhoto.Visible = false;
 
                 btnUploadPhoto.Visible = false;
 
@@ -345,8 +312,8 @@ namespace courseDB_Form
             }
         }
 
-        // Метод для геристрации нового пользователя
-        public void RegisterUser(string userName, string password, string role, string group, string post, string scientificInterests, string scheduleOfStay, byte[] teacherImage)
+        // Метод для hеuистрации нового пользователя
+        public void RegisterUser(string userName, string password, string role, string group, string post, string scientificInterests, string scheduleOfStay, byte[] teacherImage)//byte[] teacherImage
         {
             try
             {
@@ -379,11 +346,17 @@ namespace courseDB_Form
                                     if (string.IsNullOrEmpty(group))
                                         throw new ArgumentException("Группа не указана для студента.");
 
+                                    int groupId = GetGroupIdByName(group);
+                                    if (groupId == 0) // Предположим, что 0 — это недопустимое значение
+                                    {
+                                        throw new ArgumentException("Группа не найдена.");
+                                    }
+
                                     string studentQuery = "INSERT INTO Students (student_name, group_ID, user_ID) VALUES (@student_name, @group_ID, @user_ID);";
                                     using (var studentCmd = new NpgsqlCommand(studentQuery, connection, transaction))
                                     {
                                         studentCmd.Parameters.AddWithValue("@student_name", userName);
-                                        studentCmd.Parameters.AddWithValue("@group_ID", GetGroupIdByName(group)); // Предполагаем, что group_ID — это число
+                                        studentCmd.Parameters.AddWithValue("@group_ID", groupId);
                                         studentCmd.Parameters.AddWithValue("@user_ID", userId);
                                         studentCmd.ExecuteNonQuery();
                                     }
@@ -446,7 +419,7 @@ namespace courseDB_Form
         // Метод для получения id группы по ее названию
         public int GetGroupIdByName(string groupName)
         {
-            int groupId = -1; 
+            int groupId = -1;
 
             try
             {
@@ -454,17 +427,17 @@ namespace courseDB_Form
                 {
                     connection.Open();
 
-          
+
                     string query = "SELECT group_ID FROM groups WHERE group_name = @group_name;";
 
                     using (var cmd = new NpgsqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@group_name", groupName);
 
- 
+
                         var result = cmd.ExecuteScalar();
 
-                      
+
                         if (result != null && result != DBNull.Value)
                         {
                             groupId = Convert.ToInt32(result);
@@ -496,6 +469,117 @@ namespace courseDB_Form
 
                 // Возвращаем массив байтов
                 return ms.ToArray();
+            }
+        }
+
+        private void cbUpSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbUpGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbUpRole_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Загружаем имена пользователей с выбранной ролью
+            GetUserNamesByRole(cbUpRole.SelectedItem.ToString());
+
+            if (cbUpRole.SelectedItem.ToString() == "TEACHER")
+            {
+                txtUpTeacherPost.Visible = true;
+                txtUpStay.Visible = true;
+                txtUpInterest.Visible = true;
+
+                cbUpGroup.Visible = false;
+
+                pbUpPhoto.Visible = true;
+
+                btnUpPhoto.Visible = true;
+
+                lbUpGroup.Visible = false;
+                lbUpInterest.Visible = true;
+                lbUpPost.Visible = true;
+                lbUpStay.Visible = true;
+
+            }
+            else if (cbUpRole.SelectedItem.ToString() == "STUDENT")
+            {
+                cbUpGroup.Visible = true;
+
+                txtUpTeacherPost.Visible = false;
+                txtUpStay.Visible = false;
+                txtUpInterest.Visible = false;
+
+                pbUpPhoto.Visible = false;
+
+                btnUpPhoto.Visible = false;
+
+                lbUpGroup.Visible = true;
+                lbUpInterest.Visible = false;
+                lbUpPost.Visible = false;
+                lbUpStay.Visible = false;
+            }
+            else if (cbUpRole.SelectedItem.ToString() == "ADMIN")
+            {
+                cbUpGroup.Visible = false;
+
+                txtUpTeacherPost.Visible = false;
+                txtUpStay.Visible = false;
+                txtUpInterest.Visible = false;
+
+                pbUpPhoto.Visible = false;
+
+                btnUpPhoto.Visible = false;
+
+                lbUpGroup.Visible = false;
+                lbUpInterest.Visible = false;
+                lbUpPost.Visible = false;
+                lbUpStay.Visible = false;
+            }
+        }
+
+        private void GetUserNamesByRole(string role)
+        {
+            List<string> userNames = new List<string>();
+            cbUpSearch.Items.Clear();
+            try
+            {
+                if (role != null)
+                {
+                    using (var connection = new NpgsqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        // SQL-запрос для получения имен пользователей с выбранной ролью
+                        string query = "SELECT user_name FROM Users WHERE user_role = @role;";
+
+                        using (var command = new NpgsqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@role", role);
+
+                            using (var reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    string userName = reader.GetString(0); // Получаем user_name
+                                    userNames.Add(userName);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке пользователей: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            foreach (string userName in userNames)
+            {
+                cbUpSearch.Items.Add(userName);
             }
         }
     }

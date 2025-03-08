@@ -33,24 +33,6 @@
             btnScientificWorkUpdating = new Button();
             panelRegistration = new Panel();
             cbGroup = new ComboBox();
-            panelUpdateTeacher = new Panel();
-            btnSearchTeacher = new Button();
-            btnExit = new Button();
-            btnUpdate = new Button();
-            btnUpdateTeacherPhoto = new Button();
-            pictureBoxTeacherPhoto = new PictureBox();
-            label11 = new Label();
-            txtTeacherId = new TextBox();
-            txtTeacherInterests = new TextBox();
-            label10 = new Label();
-            txtTeacherStay = new TextBox();
-            label9 = new Label();
-            txtTeacherPost = new TextBox();
-            label8 = new Label();
-            txtTeacherPassword = new TextBox();
-            label7 = new Label();
-            label6 = new Label();
-            txtTeacherName = new TextBox();
             lbGroup = new Label();
             cbSelectUserRegistration = new ComboBox();
             lbPassword = new Label();
@@ -66,6 +48,25 @@
             txtNewInterests = new TextBox();
             txtNewPassword = new TextBox();
             txtNewUsername = new TextBox();
+            panelUpdateTeacher = new Panel();
+            txtUpTeacherPost = new TextBox();
+            lbUpGroup = new Label();
+            lbUpStay = new Label();
+            lbUpPost = new Label();
+            lbUpPassword = new Label();
+            lbUpName = new Label();
+            cbUpSearch = new ComboBox();
+            cbUpRole = new ComboBox();
+            cbUpGroup = new ComboBox();
+            btnUpdate = new Button();
+            btnUpPhoto = new Button();
+            pbUpPhoto = new PictureBox();
+            label11 = new Label();
+            txtUpInterest = new TextBox();
+            lbUpInterest = new Label();
+            txtUpStay = new TextBox();
+            txtUpPassword = new TextBox();
+            txtUpName = new TextBox();
             panelUpdateDirection = new Panel();
             listBoxPracticant = new ListBox();
             label16 = new Label();
@@ -100,9 +101,9 @@
             btnAddDirection = new Button();
             btnExitToLog = new Button();
             panelRegistration.SuspendLayout();
-            panelUpdateTeacher.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxTeacherPhoto).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxUserPhoto).BeginInit();
+            panelUpdateTeacher.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pbUpPhoto).BeginInit();
             panelUpdateDirection.SuspendLayout();
             panelAddDIrection.SuspendLayout();
             SuspendLayout();
@@ -140,7 +141,6 @@
             // panelRegistration
             // 
             panelRegistration.Controls.Add(cbGroup);
-            panelRegistration.Controls.Add(panelUpdateTeacher);
             panelRegistration.Controls.Add(lbGroup);
             panelRegistration.Controls.Add(cbSelectUserRegistration);
             panelRegistration.Controls.Add(lbPassword);
@@ -166,180 +166,10 @@
             cbGroup.DropDownStyle = ComboBoxStyle.DropDownList;
             cbGroup.FormattingEnabled = true;
             cbGroup.Items.AddRange(new object[] { "Группа ПИН-121", "Группа ПИН-122", "Группа ПИН-123", "Группа ПИН-124", "Группа ИС-121", "Группа ИС-122", "Группа ИС-123", "Группа ИС-124", "Группа ФПМ-121", "Группа ФПМ-122", "Группа ФПМ-123", "Группа ФПМ-124", "Группа РТ-121", "Группа РТ-122", "Группа РТ-123", "Группа РТ-124", "Группа УКТС-121", "Группа УКТС-122", "Группа УКТС-123", "Группа УКТС-124" });
-            cbGroup.Location = new Point(3, 132);
+            cbGroup.Location = new Point(3, 133);
             cbGroup.Name = "cbGroup";
             cbGroup.Size = new Size(263, 28);
             cbGroup.TabIndex = 16;
-            // 
-            // panelUpdateTeacher
-            // 
-            panelUpdateTeacher.Controls.Add(btnSearchTeacher);
-            panelUpdateTeacher.Controls.Add(btnExit);
-            panelUpdateTeacher.Controls.Add(btnUpdate);
-            panelUpdateTeacher.Controls.Add(btnUpdateTeacherPhoto);
-            panelUpdateTeacher.Controls.Add(pictureBoxTeacherPhoto);
-            panelUpdateTeacher.Controls.Add(label11);
-            panelUpdateTeacher.Controls.Add(txtTeacherId);
-            panelUpdateTeacher.Controls.Add(txtTeacherInterests);
-            panelUpdateTeacher.Controls.Add(label10);
-            panelUpdateTeacher.Controls.Add(txtTeacherStay);
-            panelUpdateTeacher.Controls.Add(label9);
-            panelUpdateTeacher.Controls.Add(txtTeacherPost);
-            panelUpdateTeacher.Controls.Add(label8);
-            panelUpdateTeacher.Controls.Add(txtTeacherPassword);
-            panelUpdateTeacher.Controls.Add(label7);
-            panelUpdateTeacher.Controls.Add(label6);
-            panelUpdateTeacher.Controls.Add(txtTeacherName);
-            panelUpdateTeacher.Location = new Point(26, 283);
-            panelUpdateTeacher.Name = "panelUpdateTeacher";
-            panelUpdateTeacher.Size = new Size(564, 432);
-            panelUpdateTeacher.TabIndex = 4;
-            // 
-            // btnSearchTeacher
-            // 
-            btnSearchTeacher.Location = new Point(272, 60);
-            btnSearchTeacher.Name = "btnSearchTeacher";
-            btnSearchTeacher.Size = new Size(187, 32);
-            btnSearchTeacher.TabIndex = 27;
-            btnSearchTeacher.Text = "Найти преподавателя";
-            btnSearchTeacher.UseVisualStyleBackColor = true;
-            btnSearchTeacher.Click += btnSearchTeacher_Click;
-            // 
-            // btnExit
-            // 
-            btnExit.Location = new Point(151, 368);
-            btnExit.Name = "btnExit";
-            btnExit.Size = new Size(146, 61);
-            btnExit.TabIndex = 26;
-            btnExit.Text = "Отменить изменения";
-            btnExit.UseVisualStyleBackColor = true;
-            btnExit.Click += btnExit_Click;
-            // 
-            // btnUpdate
-            // 
-            btnUpdate.Location = new Point(3, 368);
-            btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(142, 61);
-            btnUpdate.TabIndex = 25;
-            btnUpdate.Text = "Применить изменения";
-            btnUpdate.UseVisualStyleBackColor = true;
-            btnUpdate.Click += btnUpdate_Click;
-            // 
-            // btnUpdateTeacherPhoto
-            // 
-            btnUpdateTeacherPhoto.Location = new Point(272, 328);
-            btnUpdateTeacherPhoto.Name = "btnUpdateTeacherPhoto";
-            btnUpdateTeacherPhoto.Size = new Size(187, 32);
-            btnUpdateTeacherPhoto.TabIndex = 24;
-            btnUpdateTeacherPhoto.Text = "Добавить фото";
-            btnUpdateTeacherPhoto.UseVisualStyleBackColor = true;
-            btnUpdateTeacherPhoto.Click += btnUpdateTeacherPhoto_Click;
-            // 
-            // pictureBoxTeacherPhoto
-            // 
-            pictureBoxTeacherPhoto.Location = new Point(272, 98);
-            pictureBoxTeacherPhoto.Name = "pictureBoxTeacherPhoto";
-            pictureBoxTeacherPhoto.Size = new Size(187, 224);
-            pictureBoxTeacherPhoto.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBoxTeacherPhoto.TabIndex = 23;
-            pictureBoxTeacherPhoto.TabStop = false;
-            // 
-            // label11
-            // 
-            label11.AutoSize = true;
-            label11.Location = new Point(272, 4);
-            label11.Name = "label11";
-            label11.Size = new Size(194, 20);
-            label11.TabIndex = 22;
-            label11.Text = "Введите ID преподавателя";
-            // 
-            // txtTeacherId
-            // 
-            txtTeacherId.Location = new Point(272, 27);
-            txtTeacherId.Name = "txtTeacherId";
-            txtTeacherId.Size = new Size(263, 27);
-            txtTeacherId.TabIndex = 21;
-            // 
-            // txtTeacherInterests
-            // 
-            txtTeacherInterests.Location = new Point(3, 239);
-            txtTeacherInterests.Multiline = true;
-            txtTeacherInterests.Name = "txtTeacherInterests";
-            txtTeacherInterests.Size = new Size(263, 123);
-            txtTeacherInterests.TabIndex = 20;
-            // 
-            // label10
-            // 
-            label10.AutoSize = true;
-            label10.Location = new Point(3, 216);
-            label10.Name = "label10";
-            label10.Size = new Size(142, 20);
-            label10.TabIndex = 19;
-            label10.Text = "Научные интересы";
-            // 
-            // txtTeacherStay
-            // 
-            txtTeacherStay.Location = new Point(3, 186);
-            txtTeacherStay.Name = "txtTeacherStay";
-            txtTeacherStay.Size = new Size(263, 27);
-            txtTeacherStay.TabIndex = 18;
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new Point(3, 163);
-            label9.Name = "label9";
-            label9.Size = new Size(146, 20);
-            label9.TabIndex = 17;
-            label9.Text = "Время пребывания";
-            // 
-            // txtTeacherPost
-            // 
-            txtTeacherPost.Location = new Point(3, 133);
-            txtTeacherPost.Name = "txtTeacherPost";
-            txtTeacherPost.Size = new Size(263, 27);
-            txtTeacherPost.TabIndex = 16;
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new Point(3, 110);
-            label8.Name = "label8";
-            label8.Size = new Size(86, 20);
-            label8.TabIndex = 15;
-            label8.Text = "Должность";
-            // 
-            // txtTeacherPassword
-            // 
-            txtTeacherPassword.Location = new Point(3, 80);
-            txtTeacherPassword.Name = "txtTeacherPassword";
-            txtTeacherPassword.Size = new Size(263, 27);
-            txtTeacherPassword.TabIndex = 14;
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new Point(3, 57);
-            label7.Name = "label7";
-            label7.Size = new Size(62, 20);
-            label7.TabIndex = 13;
-            label7.Text = "Пароль";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(3, 4);
-            label6.Name = "label6";
-            label6.Size = new Size(39, 20);
-            label6.TabIndex = 7;
-            label6.Text = "Имя";
-            // 
-            // txtTeacherName
-            // 
-            txtTeacherName.Location = new Point(3, 27);
-            txtTeacherName.Name = "txtTeacherName";
-            txtTeacherName.Size = new Size(263, 27);
-            txtTeacherName.TabIndex = 1;
             // 
             // lbGroup
             // 
@@ -470,6 +300,191 @@
             txtNewUsername.Name = "txtNewUsername";
             txtNewUsername.Size = new Size(263, 27);
             txtNewUsername.TabIndex = 0;
+            // 
+            // panelUpdateTeacher
+            // 
+            panelUpdateTeacher.Controls.Add(txtUpTeacherPost);
+            panelUpdateTeacher.Controls.Add(lbUpGroup);
+            panelUpdateTeacher.Controls.Add(lbUpStay);
+            panelUpdateTeacher.Controls.Add(lbUpPost);
+            panelUpdateTeacher.Controls.Add(lbUpPassword);
+            panelUpdateTeacher.Controls.Add(lbUpName);
+            panelUpdateTeacher.Controls.Add(cbUpSearch);
+            panelUpdateTeacher.Controls.Add(cbUpRole);
+            panelUpdateTeacher.Controls.Add(cbUpGroup);
+            panelUpdateTeacher.Controls.Add(btnUpdate);
+            panelUpdateTeacher.Controls.Add(btnUpPhoto);
+            panelUpdateTeacher.Controls.Add(pbUpPhoto);
+            panelUpdateTeacher.Controls.Add(label11);
+            panelUpdateTeacher.Controls.Add(txtUpInterest);
+            panelUpdateTeacher.Controls.Add(lbUpInterest);
+            panelUpdateTeacher.Controls.Add(txtUpStay);
+            panelUpdateTeacher.Controls.Add(txtUpPassword);
+            panelUpdateTeacher.Controls.Add(txtUpName);
+            panelUpdateTeacher.Location = new Point(12, 76);
+            panelUpdateTeacher.Name = "panelUpdateTeacher";
+            panelUpdateTeacher.Size = new Size(564, 432);
+            panelUpdateTeacher.TabIndex = 4;
+            // 
+            // txtUpTeacherPost
+            // 
+            txtUpTeacherPost.Location = new Point(3, 133);
+            txtUpTeacherPost.Name = "txtUpTeacherPost";
+            txtUpTeacherPost.Size = new Size(263, 27);
+            txtUpTeacherPost.TabIndex = 36;
+            // 
+            // lbUpGroup
+            // 
+            lbUpGroup.AutoSize = true;
+            lbUpGroup.Location = new Point(3, 110);
+            lbUpGroup.Name = "lbUpGroup";
+            lbUpGroup.Size = new Size(58, 20);
+            lbUpGroup.TabIndex = 35;
+            lbUpGroup.Text = "Группа";
+            // 
+            // lbUpStay
+            // 
+            lbUpStay.AutoSize = true;
+            lbUpStay.Location = new Point(3, 164);
+            lbUpStay.Name = "lbUpStay";
+            lbUpStay.Size = new Size(146, 20);
+            lbUpStay.TabIndex = 34;
+            lbUpStay.Text = "Время пребывания";
+            // 
+            // lbUpPost
+            // 
+            lbUpPost.AutoSize = true;
+            lbUpPost.Location = new Point(3, 110);
+            lbUpPost.Name = "lbUpPost";
+            lbUpPost.Size = new Size(86, 20);
+            lbUpPost.TabIndex = 33;
+            lbUpPost.Text = "Должность";
+            // 
+            // lbUpPassword
+            // 
+            lbUpPassword.AutoSize = true;
+            lbUpPassword.Location = new Point(3, 57);
+            lbUpPassword.Name = "lbUpPassword";
+            lbUpPassword.Size = new Size(62, 20);
+            lbUpPassword.TabIndex = 32;
+            lbUpPassword.Text = "Пароль";
+            // 
+            // lbUpName
+            // 
+            lbUpName.AutoSize = true;
+            lbUpName.Location = new Point(3, 4);
+            lbUpName.Name = "lbUpName";
+            lbUpName.Size = new Size(39, 20);
+            lbUpName.TabIndex = 31;
+            lbUpName.Text = "Имя";
+            // 
+            // cbUpSearch
+            // 
+            cbUpSearch.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbUpSearch.FormattingEnabled = true;
+            cbUpSearch.Location = new Point(272, 27);
+            cbUpSearch.Name = "cbUpSearch";
+            cbUpSearch.Size = new Size(263, 28);
+            cbUpSearch.TabIndex = 30;
+            cbUpSearch.SelectedIndexChanged += cbUpSearch_SelectedIndexChanged;
+            // 
+            // cbUpRole
+            // 
+            cbUpRole.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbUpRole.FormattingEnabled = true;
+            cbUpRole.Items.AddRange(new object[] { "TEACHER", "STUDENT", "ADMIN" });
+            cbUpRole.Location = new Point(151, 398);
+            cbUpRole.Name = "cbUpRole";
+            cbUpRole.Size = new Size(178, 28);
+            cbUpRole.TabIndex = 29;
+            cbUpRole.SelectedIndexChanged += cbUpRole_SelectedIndexChanged;
+            // 
+            // cbUpGroup
+            // 
+            cbUpGroup.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbUpGroup.FormattingEnabled = true;
+            cbUpGroup.Items.AddRange(new object[] { "Группа ПИН-121", "Группа ПИН-122", "Группа ПИН-123", "Группа ПИН-124", "Группа ИС-121", "Группа ИС-122", "Группа ИС-123", "Группа ИС-124", "Группа ФПМ-121", "Группа ФПМ-122", "Группа ФПМ-123", "Группа ФПМ-124", "Группа РТ-121", "Группа РТ-122", "Группа РТ-123", "Группа РТ-124", "Группа УКТС-121", "Группа УКТС-122", "Группа УКТС-123", "Группа УКТС-124" });
+            cbUpGroup.Location = new Point(3, 134);
+            cbUpGroup.Name = "cbUpGroup";
+            cbUpGroup.Size = new Size(263, 28);
+            cbUpGroup.TabIndex = 28;
+            cbUpGroup.SelectedIndexChanged += cbUpGroup_SelectedIndexChanged;
+            // 
+            // btnUpdate
+            // 
+            btnUpdate.Location = new Point(3, 368);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(142, 61);
+            btnUpdate.TabIndex = 25;
+            btnUpdate.Text = "Применить изменения";
+            btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Click += btnUpdate_Click;
+            // 
+            // btnUpPhoto
+            // 
+            btnUpPhoto.Location = new Point(335, 394);
+            btnUpPhoto.Name = "btnUpPhoto";
+            btnUpPhoto.Size = new Size(187, 32);
+            btnUpPhoto.TabIndex = 24;
+            btnUpPhoto.Text = "Добавить фото";
+            btnUpPhoto.UseVisualStyleBackColor = true;
+            btnUpPhoto.Click += btnUpdateTeacherPhoto_Click;
+            // 
+            // pbUpPhoto
+            // 
+            pbUpPhoto.Location = new Point(335, 164);
+            pbUpPhoto.Name = "pbUpPhoto";
+            pbUpPhoto.Size = new Size(187, 224);
+            pbUpPhoto.SizeMode = PictureBoxSizeMode.StretchImage;
+            pbUpPhoto.TabIndex = 23;
+            pbUpPhoto.TabStop = false;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(272, 4);
+            label11.Name = "label11";
+            label11.Size = new Size(242, 20);
+            label11.TabIndex = 22;
+            label11.Text = "Выберите нужного пользователя";
+            // 
+            // txtUpInterest
+            // 
+            txtUpInterest.Location = new Point(3, 239);
+            txtUpInterest.Multiline = true;
+            txtUpInterest.Name = "txtUpInterest";
+            txtUpInterest.Size = new Size(263, 123);
+            txtUpInterest.TabIndex = 20;
+            // 
+            // lbUpInterest
+            // 
+            lbUpInterest.AutoSize = true;
+            lbUpInterest.Location = new Point(3, 216);
+            lbUpInterest.Name = "lbUpInterest";
+            lbUpInterest.Size = new Size(142, 20);
+            lbUpInterest.TabIndex = 19;
+            lbUpInterest.Text = "Научные интересы";
+            // 
+            // txtUpStay
+            // 
+            txtUpStay.Location = new Point(3, 186);
+            txtUpStay.Name = "txtUpStay";
+            txtUpStay.Size = new Size(263, 27);
+            txtUpStay.TabIndex = 18;
+            // 
+            // txtUpPassword
+            // 
+            txtUpPassword.Location = new Point(3, 80);
+            txtUpPassword.Name = "txtUpPassword";
+            txtUpPassword.Size = new Size(263, 27);
+            txtUpPassword.TabIndex = 14;
+            // 
+            // txtUpName
+            // 
+            txtUpName.Location = new Point(3, 27);
+            txtUpName.Name = "txtUpName";
+            txtUpName.Size = new Size(263, 27);
+            txtUpName.TabIndex = 1;
             // 
             // panelUpdateDirection
             // 
@@ -789,6 +804,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1513, 699);
             Controls.Add(btnExitToLog);
+            Controls.Add(panelUpdateTeacher);
             Controls.Add(panelAddDIrection);
             Controls.Add(btnAddDirection);
             Controls.Add(panelUpdateDirection);
@@ -801,10 +817,10 @@
             Text = "AdminForm";
             panelRegistration.ResumeLayout(false);
             panelRegistration.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxUserPhoto).EndInit();
             panelUpdateTeacher.ResumeLayout(false);
             panelUpdateTeacher.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxTeacherPhoto).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxUserPhoto).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pbUpPhoto).EndInit();
             panelUpdateDirection.ResumeLayout(false);
             panelUpdateDirection.PerformLayout();
             panelAddDIrection.ResumeLayout(false);
@@ -832,23 +848,20 @@
         private Label lbInterest;
         private Label lbPost;
         private Label lbName;
-        private PictureBox pictureBoxTeacherPhoto;
+        private PictureBox pbUpPhoto;
         private Label label11;
         private TextBox txtTeacherId;
-        private TextBox txtTeacherInterests;
-        private Label label10;
-        private TextBox txtTeacherStay;
+        private TextBox txtUpInterest;
+        private TextBox txtUpStay;
         private Label label9;
-        private TextBox txtTeacherPost;
+        private TextBox txtUpPost;
         private Label label8;
-        private TextBox txtTeacherPassword;
+        private TextBox txtUpPassword;
         private Label label7;
         private Label label6;
-        private TextBox txtTeacherName;
-        private Button btnSearchTeacher;
-        private Button btnExit;
+        private TextBox txtUpName;
         private Button btnUpdate;
-        private Button btnUpdateTeacherPhoto;
+        private Button btnUpPhoto;
         private Panel panelUpdateDirection;
         private Button btnSearchDirection;
         private Button btnExitDirection;
@@ -885,5 +898,16 @@
         private Label lbGroup;
         private ComboBox cbGroup;
         private Button btnExitToLog;
+        private ComboBox cbUpRole;
+        private ComboBox cbUpGroup;
+        private ComboBox cbUpSearch;
+        private Button btnSearchTeacher;
+        private Label lbUpStay;
+        private Label lbUpPost;
+        private Label lbUpPassword;
+        private Label lbUpName;
+        private Label lbUpInterest;
+        private Label lbUpGroup;
+        private TextBox txtUpTeacherPost;
     }
 }
