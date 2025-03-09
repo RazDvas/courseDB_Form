@@ -75,27 +75,39 @@
             label22 = new Label();
             label23 = new Label();
             txtAddDirectionName = new TextBox();
+            panelAddCourse = new Panel();
+            label4 = new Label();
+            txtNewMaterials = new TextBox();
+            cbAddTeacherToCourse = new ComboBox();
+            label1 = new Label();
+            btnAddNewCourse = new Button();
+            txtNewDiscipline = new TextBox();
+            label2 = new Label();
+            label3 = new Label();
+            txtNewCourseName = new TextBox();
             panelUpdateDirection = new Panel();
-            listBoxPracticant = new ListBox();
+            cbAddUserToDIrection = new ComboBox();
+            cbDirectionUp = new ComboBox();
+            lbPracticant = new ListBox();
             label16 = new Label();
+            btnAddUser = new Button();
+            btnDeleteParticipiant = new Button();
+            label14 = new Label();
             btnUpdateDirection = new Button();
             label12 = new Label();
             txtDirectionBrief = new TextBox();
             label13 = new Label();
             label17 = new Label();
-            txtDIrectionName = new TextBox();
+            txtDirectionLiderName = new TextBox();
             btnAddDirection = new Button();
             btnExitToLog = new Button();
-            btnAddUser = new Button();
-            btnDeleteParticipiant = new Button();
-            label14 = new Label();
-            comboBox1 = new ComboBox();
-            comboBox2 = new ComboBox();
+            btnAddCourse = new Button();
             panelRegistration.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxUserPhoto).BeginInit();
             panelUpdateTeacher.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pbUpPhoto).BeginInit();
             panelAddDIrection.SuspendLayout();
+            panelAddCourse.SuspendLayout();
             panelUpdateDirection.SuspendLayout();
             SuspendLayout();
             // 
@@ -548,11 +560,105 @@
             txtAddDirectionName.Size = new Size(263, 27);
             txtAddDirectionName.TabIndex = 1;
             // 
+            // panelAddCourse
+            // 
+            panelAddCourse.Controls.Add(label4);
+            panelAddCourse.Controls.Add(txtNewMaterials);
+            panelAddCourse.Controls.Add(cbAddTeacherToCourse);
+            panelAddCourse.Controls.Add(label1);
+            panelAddCourse.Controls.Add(btnAddNewCourse);
+            panelAddCourse.Controls.Add(txtNewDiscipline);
+            panelAddCourse.Controls.Add(label2);
+            panelAddCourse.Controls.Add(label3);
+            panelAddCourse.Controls.Add(txtNewCourseName);
+            panelAddCourse.Location = new Point(12, 71);
+            panelAddCourse.Name = "panelAddCourse";
+            panelAddCourse.Size = new Size(564, 432);
+            panelAddCourse.TabIndex = 9;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(272, 58);
+            label4.Name = "label4";
+            label4.Size = new Size(191, 20);
+            label4.TabIndex = 33;
+            label4.Text = "Методические материалы";
+            // 
+            // txtNewMaterials
+            // 
+            txtNewMaterials.Location = new Point(272, 81);
+            txtNewMaterials.Multiline = true;
+            txtNewMaterials.Name = "txtNewMaterials";
+            txtNewMaterials.Size = new Size(263, 282);
+            txtNewMaterials.TabIndex = 32;
+            // 
+            // cbAddTeacherToCourse
+            // 
+            cbAddTeacherToCourse.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbAddTeacherToCourse.FormattingEnabled = true;
+            cbAddTeacherToCourse.Location = new Point(272, 27);
+            cbAddTeacherToCourse.Name = "cbAddTeacherToCourse";
+            cbAddTeacherToCourse.Size = new Size(263, 28);
+            cbAddTeacherToCourse.TabIndex = 31;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(272, 5);
+            label1.Name = "label1";
+            label1.Size = new Size(188, 20);
+            label1.TabIndex = 28;
+            label1.Text = "Выберите преподавателя";
+            // 
+            // btnAddNewCourse
+            // 
+            btnAddNewCourse.Location = new Point(3, 368);
+            btnAddNewCourse.Name = "btnAddNewCourse";
+            btnAddNewCourse.Size = new Size(157, 61);
+            btnAddNewCourse.TabIndex = 25;
+            btnAddNewCourse.Text = "Добавить курс";
+            btnAddNewCourse.UseVisualStyleBackColor = true;
+            btnAddNewCourse.Click += btnAddNewCourse_Click;
+            // 
+            // txtNewDiscipline
+            // 
+            txtNewDiscipline.Location = new Point(3, 80);
+            txtNewDiscipline.Multiline = true;
+            txtNewDiscipline.Name = "txtNewDiscipline";
+            txtNewDiscipline.Size = new Size(263, 282);
+            txtNewDiscipline.TabIndex = 20;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(3, 57);
+            label2.Name = "label2";
+            label2.Size = new Size(183, 20);
+            label2.TabIndex = 19;
+            label2.Text = "Программа дисциплины";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(3, 4);
+            label3.Name = "label3";
+            label3.Size = new Size(169, 20);
+            label3.TabIndex = 7;
+            label3.Text = "Название дисциплины";
+            // 
+            // txtNewCourseName
+            // 
+            txtNewCourseName.Location = new Point(3, 27);
+            txtNewCourseName.Name = "txtNewCourseName";
+            txtNewCourseName.Size = new Size(263, 27);
+            txtNewCourseName.TabIndex = 1;
+            // 
             // panelUpdateDirection
             // 
-            panelUpdateDirection.Controls.Add(comboBox2);
-            panelUpdateDirection.Controls.Add(comboBox1);
-            panelUpdateDirection.Controls.Add(listBoxPracticant);
+            panelUpdateDirection.Controls.Add(cbAddUserToDIrection);
+            panelUpdateDirection.Controls.Add(cbDirectionUp);
+            panelUpdateDirection.Controls.Add(lbPracticant);
             panelUpdateDirection.Controls.Add(label16);
             panelUpdateDirection.Controls.Add(btnAddUser);
             panelUpdateDirection.Controls.Add(btnDeleteParticipiant);
@@ -562,19 +668,38 @@
             panelUpdateDirection.Controls.Add(txtDirectionBrief);
             panelUpdateDirection.Controls.Add(label13);
             panelUpdateDirection.Controls.Add(label17);
-            panelUpdateDirection.Controls.Add(txtDIrectionName);
-            panelUpdateDirection.Location = new Point(637, 153);
+            panelUpdateDirection.Controls.Add(txtDirectionLiderName);
+            panelUpdateDirection.Location = new Point(12, 74);
             panelUpdateDirection.Name = "panelUpdateDirection";
             panelUpdateDirection.Size = new Size(564, 432);
             panelUpdateDirection.TabIndex = 5;
             // 
-            // listBoxPracticant
+            // cbAddUserToDIrection
             // 
-            listBoxPracticant.FormattingEnabled = true;
-            listBoxPracticant.Location = new Point(3, 275);
-            listBoxPracticant.Name = "listBoxPracticant";
-            listBoxPracticant.Size = new Size(263, 144);
-            listBoxPracticant.TabIndex = 36;
+            cbAddUserToDIrection.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbAddUserToDIrection.FormattingEnabled = true;
+            cbAddUserToDIrection.Location = new Point(272, 84);
+            cbAddUserToDIrection.Name = "cbAddUserToDIrection";
+            cbAddUserToDIrection.Size = new Size(263, 28);
+            cbAddUserToDIrection.TabIndex = 38;
+            // 
+            // cbDirectionUp
+            // 
+            cbDirectionUp.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbDirectionUp.FormattingEnabled = true;
+            cbDirectionUp.Location = new Point(272, 26);
+            cbDirectionUp.Name = "cbDirectionUp";
+            cbDirectionUp.Size = new Size(263, 28);
+            cbDirectionUp.TabIndex = 37;
+            cbDirectionUp.SelectedIndexChanged += cbDirectionUp_SelectedIndexChanged;
+            // 
+            // lbPracticant
+            // 
+            lbPracticant.FormattingEnabled = true;
+            lbPracticant.Location = new Point(3, 275);
+            lbPracticant.Name = "lbPracticant";
+            lbPracticant.Size = new Size(263, 144);
+            lbPracticant.TabIndex = 36;
             // 
             // label16
             // 
@@ -584,78 +709,6 @@
             label16.Size = new Size(81, 20);
             label16.TabIndex = 35;
             label16.Text = "Участники";
-            // 
-            // btnUpdateDirection
-            // 
-            btnUpdateDirection.Location = new Point(419, 348);
-            btnUpdateDirection.Name = "btnUpdateDirection";
-            btnUpdateDirection.Size = new Size(142, 71);
-            btnUpdateDirection.TabIndex = 25;
-            btnUpdateDirection.Text = "Применить изменения";
-            btnUpdateDirection.UseVisualStyleBackColor = true;
-            btnUpdateDirection.Click += btnUpdateDirection_Click;
-            // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.Location = new Point(272, 4);
-            label12.Name = "label12";
-            label12.Size = new Size(181, 20);
-            label12.TabIndex = 22;
-            label12.Text = "Введите ID направления";
-            // 
-            // txtDirectionBrief
-            // 
-            txtDirectionBrief.Location = new Point(3, 80);
-            txtDirectionBrief.Multiline = true;
-            txtDirectionBrief.Name = "txtDirectionBrief";
-            txtDirectionBrief.Size = new Size(263, 169);
-            txtDirectionBrief.TabIndex = 20;
-            // 
-            // label13
-            // 
-            label13.AutoSize = true;
-            label13.Location = new Point(3, 57);
-            label13.Name = "label13";
-            label13.Size = new Size(176, 20);
-            label13.TabIndex = 19;
-            label13.Text = "Краткая характеристика";
-            // 
-            // label17
-            // 
-            label17.AutoSize = true;
-            label17.Location = new Point(3, 4);
-            label17.Name = "label17";
-            label17.Size = new Size(243, 20);
-            label17.TabIndex = 7;
-            label17.Text = "Название научного направления";
-            // 
-            // txtDIrectionName
-            // 
-            txtDIrectionName.Location = new Point(3, 27);
-            txtDIrectionName.Name = "txtDIrectionName";
-            txtDIrectionName.Size = new Size(263, 27);
-            txtDIrectionName.TabIndex = 1;
-            // 
-            // btnAddDirection
-            // 
-            btnAddDirection.Location = new Point(392, 12);
-            btnAddDirection.Name = "btnAddDirection";
-            btnAddDirection.Size = new Size(184, 58);
-            btnAddDirection.TabIndex = 6;
-            btnAddDirection.Text = "Добавить научную работу";
-            btnAddDirection.UseVisualStyleBackColor = true;
-            btnAddDirection.Click += btnAddDirection_Click;
-            // 
-            // btnExitToLog
-            // 
-            btnExitToLog.Location = new Point(582, 77);
-            btnExitToLog.Name = "btnExitToLog";
-            btnExitToLog.Size = new Size(184, 58);
-            btnExitToLog.TabIndex = 8;
-            btnExitToLog.Text = "Выход";
-            btnExitToLog.UseVisualStyleBackColor = true;
-            btnExitToLog.Click += btnExitToLog_Click;
             // 
             // btnAddUser
             // 
@@ -682,34 +735,101 @@
             label14.AutoSize = true;
             label14.Location = new Point(272, 57);
             label14.Name = "label14";
-            label14.Size = new Size(157, 20);
+            label14.Size = new Size(138, 20);
             label14.TabIndex = 28;
-            label14.Text = "Введите ID участника";
+            label14.Text = "Введите участника";
             // 
-            // comboBox1
+            // btnUpdateDirection
             // 
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(272, 26);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(263, 28);
-            comboBox1.TabIndex = 37;
+            btnUpdateDirection.Location = new Point(419, 348);
+            btnUpdateDirection.Name = "btnUpdateDirection";
+            btnUpdateDirection.Size = new Size(142, 71);
+            btnUpdateDirection.TabIndex = 25;
+            btnUpdateDirection.Text = "Применить изменения";
+            btnUpdateDirection.UseVisualStyleBackColor = true;
+            btnUpdateDirection.Click += btnUpdateDirection_Click;
             // 
-            // comboBox2
+            // label12
             // 
-            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(272, 84);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(263, 28);
-            comboBox2.TabIndex = 38;
+            label12.AutoSize = true;
+            label12.Location = new Point(272, 4);
+            label12.Name = "label12";
+            label12.Size = new Size(179, 20);
+            label12.TabIndex = 22;
+            label12.Text = "Выберите  направление";
+            // 
+            // txtDirectionBrief
+            // 
+            txtDirectionBrief.Location = new Point(3, 80);
+            txtDirectionBrief.Multiline = true;
+            txtDirectionBrief.Name = "txtDirectionBrief";
+            txtDirectionBrief.Size = new Size(263, 169);
+            txtDirectionBrief.TabIndex = 20;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(3, 57);
+            label13.Name = "label13";
+            label13.Size = new Size(176, 20);
+            label13.TabIndex = 19;
+            label13.Text = "Краткая характеристика";
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Location = new Point(3, 4);
+            label17.Name = "label17";
+            label17.Size = new Size(214, 20);
+            label17.TabIndex = 7;
+            label17.Text = "Глава научного направления";
+            // 
+            // txtDirectionLiderName
+            // 
+            txtDirectionLiderName.Location = new Point(3, 27);
+            txtDirectionLiderName.Name = "txtDirectionLiderName";
+            txtDirectionLiderName.ReadOnly = true;
+            txtDirectionLiderName.Size = new Size(263, 27);
+            txtDirectionLiderName.TabIndex = 1;
+            // 
+            // btnAddDirection
+            // 
+            btnAddDirection.Location = new Point(392, 12);
+            btnAddDirection.Name = "btnAddDirection";
+            btnAddDirection.Size = new Size(184, 58);
+            btnAddDirection.TabIndex = 6;
+            btnAddDirection.Text = "Добавить научную работу";
+            btnAddDirection.UseVisualStyleBackColor = true;
+            btnAddDirection.Click += btnAddDirection_Click;
+            // 
+            // btnExitToLog
+            // 
+            btnExitToLog.Location = new Point(582, 140);
+            btnExitToLog.Name = "btnExitToLog";
+            btnExitToLog.Size = new Size(184, 58);
+            btnExitToLog.TabIndex = 8;
+            btnExitToLog.Text = "Выход";
+            btnExitToLog.UseVisualStyleBackColor = true;
+            btnExitToLog.Click += btnExitToLog_Click;
+            // 
+            // btnAddCourse
+            // 
+            btnAddCourse.Location = new Point(582, 76);
+            btnAddCourse.Name = "btnAddCourse";
+            btnAddCourse.Size = new Size(184, 58);
+            btnAddCourse.TabIndex = 10;
+            btnAddCourse.Text = "Добавить курс";
+            btnAddCourse.UseVisualStyleBackColor = true;
+            btnAddCourse.Click += btnAddCourse_Click;
             // 
             // AdminForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1513, 699);
+            ClientSize = new Size(770, 517);
+            Controls.Add(btnAddCourse);
             Controls.Add(btnExitToLog);
+            Controls.Add(panelAddCourse);
             Controls.Add(panelAddDIrection);
             Controls.Add(panelUpdateTeacher);
             Controls.Add(btnAddDirection);
@@ -729,6 +849,8 @@
             ((System.ComponentModel.ISupportInitialize)pbUpPhoto).EndInit();
             panelAddDIrection.ResumeLayout(false);
             panelAddDIrection.PerformLayout();
+            panelAddCourse.ResumeLayout(false);
+            panelAddCourse.PerformLayout();
             panelUpdateDirection.ResumeLayout(false);
             panelUpdateDirection.PerformLayout();
             ResumeLayout(false);
@@ -774,7 +896,7 @@
         private TextBox txtDirectionBrief;
         private Label label13;
         private Label label17;
-        private TextBox txtDIrectionName;
+        private TextBox txtDirectionLiderName;
         private Label label16;
         private Button btnAddDirection;
         private Panel panelAddDIrection;
@@ -788,7 +910,7 @@
         private Label label23;
         private TextBox txtAddDirectionName;
         private Label label20;
-        private ListBox listBoxPracticant;
+        private ListBox lbPracticant;
         private ListBox listBoxPracticantNew;
         private ComboBox cbSelectUserRegistration;
         private Label lbGroup;
@@ -806,10 +928,21 @@
         private TextBox txtUpTeacherPost;
         private TextBox txtUpGroup;
         private ComboBox cbAddHead;
-        private ComboBox comboBox2;
-        private ComboBox comboBox1;
+        private ComboBox cbAddUserToDIrection;
+        private ComboBox cbDirectionUp;
         private Button btnAddUser;
         private Button btnDeleteParticipiant;
         private Label label14;
+        private Panel panelAddCourse;
+        private Label label4;
+        private TextBox txtNewMaterials;
+        private ComboBox cbAddTeacherToCourse;
+        private Label label1;
+        private Button btnAddNewCourse;
+        private TextBox txtNewDiscipline;
+        private Label label2;
+        private Label label3;
+        private TextBox txtNewCourseName;
+        private Button btnAddCourse;
     }
 }

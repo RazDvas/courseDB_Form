@@ -23,6 +23,7 @@ namespace courseDB_Form
             panelAddDIrection.Visible = false;
             panelUpdateDirection.Visible = false;
             panelUpdateTeacher.Visible = false;
+            panelAddCourse.Visible = false;
 
         }
 
@@ -37,6 +38,7 @@ namespace courseDB_Form
 
             pbUpPhoto.Visible = true;
 
+            panelAddCourse.Visible = false;
             panelRegistration.Visible = true;
             panelAddDIrection.Visible = false;
             panelUpdateDirection.Visible = false;
@@ -54,6 +56,7 @@ namespace courseDB_Form
         private void btnUpdateTeacher_Click(object sender, EventArgs e)
         {
             cbUpRole.SelectionStart = cbUpRole.SelectedIndex = 0;
+            panelAddCourse.Visible = false;
             panelUpdateTeacher.Visible = true;
             panelRegistration.Visible = false;
             panelAddDIrection.Visible = false;
@@ -62,10 +65,14 @@ namespace courseDB_Form
 
         private void scientificWorkUpdating_Click(object sender, EventArgs e)
         {
+            panelAddCourse.Visible = false;
             panelRegistration.Visible = false;
             panelAddDIrection.Visible = false;
             panelUpdateDirection.Visible = true;
             panelUpdateTeacher.Visible = false;
+            LoadScientificDirectionsIntoComboBox(cbDirectionUp);
+            LoadStudentsIntoComboBox(cbAddUserToDIrection);
+
         }
         // Кнопка для регистрации нового пользователя
         private void btnRegister_Click(object sender, EventArgs e)
@@ -86,10 +93,10 @@ namespace courseDB_Form
         // Кнопка для добавления фото при регистрации
         private void btnUploadPhoto_Click(object sender, EventArgs e)
         {
-            addPhoto();
+            addPhoto(pictureBoxUserPhoto);
         }
         // Метод для добавления фото
-        private void addPhoto()
+        private void addPhoto(PictureBox box)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -102,7 +109,7 @@ namespace courseDB_Form
                     try
                     {
                         // Загружаем выбранное изображение в PictureBox
-                        pictureBoxUserPhoto.Image = Image.FromFile(openFileDialog.FileName);
+                        box.Image = Image.FromFile(openFileDialog.FileName);
                     }
                     catch (Exception ex)
                     {
@@ -168,16 +175,39 @@ namespace courseDB_Form
                                     break;
 
                                 case "TEACHER":
-                                    // Получаем данные о должности, научных интересах и времени пребывания
+                                    // Получаем данные о должности, научных интересах, времени пребывания и фото
                                     string newPost = txtUpTeacherPost.Text;
                                     string newScientificInterests = txtUpInterest.Text;
                                     string newScheduleOfStay = txtUpStay.Text;
+                                    byte[] teacherImageBytes = null;
+
+                                    // Если фото было загружено, преобразуем его в массив байтов
+                                    if (pbUpPhoto.Image == null)
+                                    {
+                                        teacherImageBytes = null;
+                                    }
+                                    else
+                                    {
+                                        using (MemoryStream ms = new MemoryStream())
+                                        {
+                                            // Сохраняем изображение в MemoryStream в формате JPEG (или другом формате)
+                                            pbUpPhoto.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                                            // Возвращаем массив байтов
+                                            teacherImageBytes = ms.ToArray();
+                                        }
+                                    }
+
+                                    
 
                                     // Обновляем данные в таблице Teachers
                                     string updateTeacherQuery = @"
-                                    UPDATE teachers
-                                    SET post = @post, scientific_interests = @scientific_interests, schedule_of_stay = @schedule_of_stay
-                                    WHERE user_ID = (SELECT user_ID FROM users WHERE user_name = @user_name);";
+                                        UPDATE teachers
+                                        SET post = @post, 
+                                            scientific_interests = @scientific_interests, 
+                                            schedule_of_stay = @schedule_of_stay, 
+                                            teacher_image = @teacher_image
+                                        WHERE user_ID = (SELECT user_ID FROM users WHERE user_name = @user_name);";
 
                                     using (var teacherCmd = new NpgsqlCommand(updateTeacherQuery, connection, transaction))
                                     {
@@ -185,6 +215,16 @@ namespace courseDB_Form
                                         teacherCmd.Parameters.AddWithValue("@scientific_interests", newScientificInterests);
                                         teacherCmd.Parameters.AddWithValue("@schedule_of_stay", newScheduleOfStay);
                                         teacherCmd.Parameters.AddWithValue("@user_name", newUserName);
+
+                                        // Если фото было загружено, передаем массив байтов, иначе передаем NULL
+                                        if (teacherImageBytes != null)
+                                        {
+                                            teacherCmd.Parameters.AddWithValue("@teacher_image", teacherImageBytes);
+                                        }
+                                        else
+                                        {
+                                            teacherCmd.Parameters.AddWithValue("@teacher_image", DBNull.Value); // Если фото отсутствует, передаем NULL
+                                        }
 
                                         teacherCmd.ExecuteNonQuery();
                                     }
@@ -221,79 +261,129 @@ namespace courseDB_Form
         // кнопка для обновлнения фото
         private void btnUpdateTeacherPhoto_Click(object sender, EventArgs e)
         {
-
+            addPhoto(pbUpPhoto);
         }
 
-        private void btnSearchDirection_Click(object sender, EventArgs e)
-        {
 
-        }
-
+        // Метод удаления студента из участников работы
         private void btnDeleteParticipiant_Click(object sender, EventArgs e)
         {
+            try
+            {
+                // Получаем имя студента из ListBox
+                string studentName = lbPracticant.SelectedItem.ToString();
 
+                // Получаем название направления из ComboBox
+                string directionName = cbDirectionUp.SelectedItem.ToString();
+
+                // Получаем student_id по имени студента
+                int studentId = GetStudentIdByName(studentName);
+
+                if (studentId == 0)
+                {
+                    MessageBox.Show("Студент не найден.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Получаем direction_id по названию направления
+                int directionId = GetDirectionIdByName(directionName);
+
+                if (directionId == 0)
+                {
+                    MessageBox.Show("Научное направление не найдено.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Удаляем студента из участников направления
+                RemoveParticipantFromDirection(studentId, directionId);
+
+                MessageBox.Show("Студент успешно удален из научного направления!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Обновляем список участников
+                LoadParticipantsByDirectionId(directionId, lbPracticant);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при удалении студента: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-
+        // кнопка добавления студенка к научной работе
         private void btnAddUser_Click(object sender, EventArgs e)
         {
-            int userId;
-            if (!int.TryParse(txtIDAddDirection.Text, out userId))
+            try
             {
-                MessageBox.Show("Введите корректный ID пользователя!");
-                return;
+                // Получаем имя студента и название направления из ComboBox
+                string studentName = cbAddUserToDIrection.SelectedItem.ToString();
+                string directionName = cbDirectionUp.SelectedItem.ToString();
+
+                // Получаем student_id по имени студента
+                int studentId = GetStudentIdByName(studentName);
+
+                if (studentId == 0)
+                {
+                    MessageBox.Show("Студент не найден.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Получаем direction_id по названию направления
+                int directionId = GetDirectionIdByName(directionName);
+
+                if (directionId == 0)
+                {
+                    MessageBox.Show("Научное направление не найдено.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Добавляем студента в таблицу участников
+                AddParticipantToDirection(studentId, directionId);
+
+                MessageBox.Show("Студент успешно добавлен в научное направление!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            using (NpgsqlConnection conn = new NpgsqlConnection(connectionString))
+            catch (Exception ex)
             {
-                try
-                {
-                    conn.Open();
-                    string query = "SELECT name FROM users WHERE id = @id";
-
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@id", userId);
-                        using (NpgsqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                string participantName = reader["name"].ToString();
-                                listBoxPracticantNew.Items.Add(participantName);
-                            }
-                            else
-                            {
-                                MessageBox.Show("Пользователь не найден!");
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Ошибка: " + ex.Message);
-                }
+                MessageBox.Show($"Ошибка при добавлении студента: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        // Кнопка обновления научного направления
         private void btnUpdateDirection_Click(object sender, EventArgs e)
         {
-            panelRegistration.Visible = false;
-            panelAddDIrection.Visible = false;
-            panelUpdateDirection.Visible = true;
-            panelUpdateTeacher.Visible = false;
+            try
+            {
+                // Получаем название направления из ComboBox
+                string directionName = cbDirectionUp.SelectedItem.ToString();
+
+                // Получаем новую характеристику направления из текстового поля
+                string newDescription = txtDirectionBrief.Text;
+
+                // Проверяем, что поле с характеристикой не пустое
+                if (string.IsNullOrEmpty(newDescription))
+                {
+                    MessageBox.Show("Поле характеристики не может быть пустым.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Получаем direction_id по названию направления
+                int directionId = GetDirectionIdByName(directionName);
+
+                if (directionId == 0)
+                {
+                    MessageBox.Show("Научное направление не найдено.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Обновляем характеристику направления
+                UpdateDirectionDescription(directionId, newDescription);
+
+                MessageBox.Show("Характеристика направления успешно обновлена!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при обновлении характеристики направления: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 
-        private void btnExitDirection_Click(object sender, EventArgs e)
-        {
 
-        }
-
-
-        // Кнопка для добавления пользователя к научной работе
-        private void btnAddUserToDirection_Click(object sender, EventArgs e)
-        {
-
-        }
 
         // Кнопка для добавления новой научной работы
         private void btnAddDirectionWork_Click(object sender, EventArgs e)
@@ -531,8 +621,102 @@ namespace courseDB_Form
 
             return groupId;
         }
+        // Метод для получение айди преподавателя по имени
+        private int GetTeacherIdByName(string teacherName)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
 
+                    string query = "SELECT teacher_id FROM teachers WHERE teacher_name = @teacher_name;";
 
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@teacher_name", teacherName);
+
+                        var result = command.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            return Convert.ToInt32(result); // Возвращаем teacher_id
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при получении teacher_id: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return -1; // Если преподаватель не найден
+        }
+        // Метод для получения student_id по имени студента
+        private int GetStudentIdByName(string studentName)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT student_id FROM students WHERE student_name = @student_name;";
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@student_name", studentName);
+
+                        var result = command.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            return Convert.ToInt32(result); // Возвращаем student_id
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при получении student_id: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return 0; // Если студент не найден
+        }
+
+        // Метод для получения direction_id по названию направления
+        private int GetDirectionIdByName(string directionName)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT direction_id FROM researchdirections WHERE direction_name = @direction_name;";
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@direction_name", directionName);
+
+                        var result = command.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            return Convert.ToInt32(result); // Возвращаем direction_id
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при получении direction_id: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return 0; // Если направление не найдено
+        }
+
+        // метод преобразования фото в массив байтов
         public byte[] ConvertImageToByteArray()
         {
             if (pictureBoxUserPhoto.Image == null)
@@ -550,6 +734,32 @@ namespace courseDB_Form
                 return ms.ToArray();
             }
         }
+        // метод преобразования массива байтов в фото
+        private void LoadImageFromByteArray(byte[] imageBytes, PictureBox pictureBox)
+        {
+            try
+            {
+                // Проверяем, что массив байтов не пустой
+                if (imageBytes == null || imageBytes.Length == 0)
+                {
+                    MessageBox.Show("Изображение отсутствует или пустое.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Преобразуем массив байтов в изображение
+                using (var ms = new MemoryStream(imageBytes))
+                {
+                    Image image = Image.FromStream(ms);
+
+                    // Загружаем изображение в PictureBox
+                    pictureBox.Image = image;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке изображения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void cbUpSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -563,6 +773,56 @@ namespace courseDB_Form
         private void cbUpGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+        // Метод для добавления студента в таблицу участников
+        private void AddParticipantToDirection(int studentId, int directionId)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // Проверяем, существует ли уже запись с таким student_id и direction_id
+                    string checkQuery = @"
+                SELECT COUNT(*)
+                FROM researchparticipants
+                WHERE student_id = @student_id AND direction_id = @direction_id;";
+
+                    using (var checkCommand = new NpgsqlCommand(checkQuery, connection))
+                    {
+                        checkCommand.Parameters.AddWithValue("@student_id", studentId);
+                        checkCommand.Parameters.AddWithValue("@direction_id", directionId);
+
+                        int count = Convert.ToInt32(checkCommand.ExecuteScalar());
+
+                        if (count > 0)
+                        {
+                            MessageBox.Show("Этот студент уже является участником данного направления.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+
+                    // Если дубликатов нет, добавляем запись
+                    string insertQuery = @"
+                INSERT INTO researchparticipants (student_id, direction_id)
+                VALUES (@student_id, @direction_id);";
+
+                    using (var insertCommand = new NpgsqlCommand(insertQuery, connection))
+                    {
+                        insertCommand.Parameters.AddWithValue("@student_id", studentId);
+                        insertCommand.Parameters.AddWithValue("@direction_id", directionId);
+
+                        insertCommand.ExecuteNonQuery();
+                    }
+
+                    MessageBox.Show("Студент успешно добавлен в научное направление!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при добавлении студента в направление: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         // Комбо бокс для выбора роли
         private void cbUpRole_SelectedIndexChanged(object sender, EventArgs e)
@@ -671,7 +931,7 @@ namespace courseDB_Form
                 {
                     connection.Open();
 
-                    // SQL-запрос для получения данных о пользователе
+                    // Исправленный SQL-запрос
                     string query = @"
                 SELECT 
                     u.user_name, 
@@ -680,6 +940,7 @@ namespace courseDB_Form
                     t.post, 
                     t.scientific_interests, 
                     t.schedule_of_stay, 
+                    t.teacher_image,
                     s.group_ID
                 FROM users u
                 LEFT JOIN teachers t ON u.user_ID = t.user_ID
@@ -730,13 +991,37 @@ namespace courseDB_Form
                                     {
                                         txtUpStay.Text = "Нет данных";
                                     }
+
+                                    // Загружаем фото преподавателя, если оно есть
+                                    if (!reader.IsDBNull(6)) // teacher_photo
+                                    {
+
+                                        try
+                                        {
+                                            // Получаем массив байтов из колонки teacher_photo
+                                            byte[] teacherPhotoBytes = reader.GetFieldValue<byte[]>(6);
+
+                                            // Передаем массив байтов в метод для загрузки изображения
+                                            LoadImageFromByteArray(teacherPhotoBytes, pbUpPhoto);
+                                        }
+                                        catch (Exception ex) // Ловим все исключения (например, проблемы с форматом данных)
+                                        {
+                                            MessageBox.Show($"Ошибка при загрузке изображения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            pbUpPhoto.Image = null; // Очищаем PictureBox
+                                        }
+                                    }
+                                    else
+                                    {
+                                        pbUpPhoto.Image = null; // Очищаем PictureBox, если фото отсутствует
+                                    }
                                 }
+
+                                // Если пользователь — студент, отображаем данные из таблицы Students
                                 if (userRole == "STUDENT")
                                 {
-                                    // Если пользователь — студент, отображаем данные из таблицы Students
-                                    if (!reader.IsDBNull(6)) // group_ID
+                                    if (!reader.IsDBNull(7)) // group_ID
                                     {
-                                        txtUpGroup.Text = reader.GetInt32(6).ToString();
+                                        txtUpGroup.Text = reader.GetInt32(7).ToString();
                                     }
                                     else
                                     {
@@ -757,6 +1042,7 @@ namespace courseDB_Form
                 MessageBox.Show($"Ошибка при загрузке данных о пользователе: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        // метод загрузки преподавателей в комбобокс
         private void LoadTeachersIntoComboBox(ComboBox comboBox)
         {
             try
@@ -790,44 +1076,15 @@ namespace courseDB_Form
                 MessageBox.Show($"Ошибка при загрузке имен преподавателей: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        //кнопка открытия меню добавления научного направления
         private void btnAddDirection_Click(object sender, EventArgs e)
         {
+            panelAddCourse.Visible = false;
             panelRegistration.Visible = false;
             panelAddDIrection.Visible = true;
             panelUpdateDirection.Visible = false;
             panelUpdateTeacher.Visible = false;
             LoadTeachersIntoComboBox(cbAddHead);
-        }
-        // Метод для получение айди преподавателя по имени
-        private int GetTeacherIdByName(string teacherName)
-        {
-            try
-            {
-                using (var connection = new NpgsqlConnection(connectionString))
-                {
-                    connection.Open();
-
-                    string query = "SELECT teacher_id FROM teachers WHERE teacher_name = @teacher_name;";
-
-                    using (var command = new NpgsqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@teacher_name", teacherName);
-
-                        var result = command.ExecuteScalar();
-
-                        if (result != null)
-                        {
-                            return Convert.ToInt32(result); // Возвращаем teacher_id
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при получении teacher_id: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            return -1; // Если преподаватель не найден
         }
 
         // Метод для создания новой научной работы
@@ -859,7 +1116,315 @@ namespace courseDB_Form
                 MessageBox.Show($"Ошибка при создании научной работы: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        // Метод добалвения названий научной работы в комбо бокс
+        private void LoadScientificDirectionsIntoComboBox(ComboBox comboBox)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
 
+                    // SQL-запрос для получения названий научных направлений
+                    string query = "SELECT direction_name FROM researchdirections;";
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        using (var reader = command.ExecuteReader())
+                        {
+                            // Очищаем ComboBox перед загрузкой новых данных
+                            comboBox.Items.Clear();
+
+                            // Добавляем названия научных направлений в ComboBox
+                            while (reader.Read())
+                            {
+                                string directionName = reader.GetString(0); // Получаем название направления
+                                comboBox.Items.Add(directionName);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке научных направлений: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        // Метд добавления имен студентов в комбо бокс
+        private void LoadStudentsIntoComboBox(ComboBox comboBox)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT student_name FROM students;";
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        using (var reader = command.ExecuteReader())
+                        {
+                            comboBox.Items.Clear();
+
+                            while (reader.Read())
+                            {
+                                string studentName = reader.GetString(0);
+                                comboBox.Items.Add(studentName);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке имен студентов: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        // загрузка данных от выбора научного направления
+        private void cbDirectionUp_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadDirectionDetailsAndParticipants(cbDirectionUp, txtDirectionLiderName, txtDirectionBrief, lbPracticant);
+        }
+        private void LoadDirectionDetailsAndParticipants(ComboBox comboBoxDirections, TextBox txtLeaderName, TextBox txtDirectionDescription, ListBox listBoxParticipants)
+        {
+            try
+            {
+                // Получаем выбранное научное направление из ComboBox
+                string selectedDirection = comboBoxDirections.SelectedItem.ToString();
+
+                // Получаем direction_id по названию направления
+                int directionId = GetDirectionIdByName(selectedDirection);
+
+                if (directionId == 0)
+                {
+                    MessageBox.Show("Научное направление не найдено.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Загружаем данные о направлении (имя лидера и характеристика)
+                LoadDirectionDetails(directionId, txtLeaderName, txtDirectionDescription);
+
+                // Загружаем участников направления
+                LoadParticipantsByDirectionId(directionId, listBoxParticipants);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Метод для загрузки данных о направлении (имя лидера и характеристика)
+        private void LoadDirectionDetails(int directionId, TextBox txtLeaderName, TextBox txtDirectionDescription)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // SQL-запрос с JOIN между researchdirections и teachers
+                    string query = @"
+                        SELECT t.teacher_name, sd.brief_description
+                        FROM researchdirections sd
+                        JOIN teachers t ON sd.teacher_id = t.teacher_id
+                        WHERE sd.direction_id = @direction_id;";
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@direction_id", directionId);
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                // Заполняем данные о направлении
+                                txtLeaderName.Text = reader.GetString(0); // Имя лидера (преподавателя)
+                                txtDirectionDescription.Text = reader.GetString(1); // Характеристика направления
+                            }
+                            else
+                            {
+                                MessageBox.Show("Данные о направлении не найдены.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке данных о направлении: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Метод для загрузки участников направления
+        private void LoadParticipantsByDirectionId(int directionId, ListBox listBoxParticipants)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // SQL-запрос с JOIN между researchparticipants и students
+                    string query = @"
+                        SELECT s.student_name
+                        FROM researchparticipants rp
+                        JOIN students s ON rp.student_id = s.student_id
+                        WHERE rp.direction_id = @direction_id;";
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@direction_id", directionId);
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            // Очищаем ListBox перед загрузкой новых данных
+                            listBoxParticipants.Items.Clear();
+
+                            // Добавляем участников в ListBox
+                            while (reader.Read())
+                            {
+                                string participantName = reader.GetString(0); // Имя студента
+                                listBoxParticipants.Items.Add(participantName);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке участников: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void UpdateDirectionDescription(int directionId, string newDescription)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // SQL-запрос для обновления характеристики направления
+                    string query = @"
+                UPDATE researchdirections
+                SET brief_description = @direction_description
+                WHERE direction_id = @direction_id;";
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@direction_description", newDescription);
+                        command.Parameters.AddWithValue("@direction_id", directionId);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при обновлении характеристики направления: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        // Метод для удаления студента из участников направления
+        private void RemoveParticipantFromDirection(int studentId, int directionId)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // SQL-запрос для удаления записи из таблицы researchparticipants
+                    string query = @"
+                DELETE FROM researchparticipants
+                WHERE student_id = @student_id AND direction_id = @direction_id;";
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@student_id", studentId);
+                        command.Parameters.AddWithValue("@direction_id", directionId);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при удалении студента из направления: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        // Кнопка открытия панели для добавлкния курса
+        private void btnAddCourse_Click(object sender, EventArgs e)
+        {
+            panelAddCourse.Visible = true;
+            panelRegistration.Visible = false;
+            panelAddDIrection.Visible = false;
+            panelUpdateDirection.Visible = false;
+            panelUpdateTeacher.Visible = false;
+            LoadTeachersIntoComboBox(cbAddTeacherToCourse);
+        }
+
+        private void btnAddNewCourse_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Получаем данные из текстовых полей
+                string courseName = txtNewCourseName.Text; // Название курса
+                string program = txtNewDiscipline.Text; // Программа дисциплин
+                string materials = txtNewMaterials.Text; // Методические материалы
+
+                // Получаем имя преподавателя из ComboBox
+                string teacherName = cbAddTeacherToCourse.SelectedItem.ToString();
+
+                // Получаем teacher_id по имени преподавателя
+                int teacherId = GetTeacherIdByName(teacherName);
+
+                if (teacherId == 0)
+                {
+                    MessageBox.Show("Преподаватель не найден.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Создаем новый курс
+                CreateCourse(courseName, program, materials, teacherId);
+
+                MessageBox.Show("Курс успешно создан!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при создании курса: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+        // Метод для создания нового курса
+        private void CreateCourse(string courseName, string program, string materials, int teacherId)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // SQL-запрос для добавления нового курса
+                    string query = @"
+                    INSERT INTO courses (course_name, discipline_program, methodological_material, teacher_id)
+                    VALUES (@course_name, @program, @materials, @teacher_id);";
+
+                    using (var command = new NpgsqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@course_name", courseName);
+                        command.Parameters.AddWithValue("@program", program);
+                        command.Parameters.AddWithValue("@materials", materials);
+                        command.Parameters.AddWithValue("@teacher_id", teacherId);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при создании курса: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
 
